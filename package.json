@@ -1,14 +1,15 @@
 {
-  "name": "@lit/lit-starter-ts",
+  "name": "Project Butterfly Frontend",
   "private": true,
   "version": "1.0.0",
-  "description": "A simple web component",
+  "description": "A frontend for project butterfly.",
   "main": "app.js",
   "module": "app.js",
   "type": "module",
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
+    "build:static": "rollup --config",
     "clean": "rimraf app.{d.ts,d.ts.map,js,js.map} test/app.{d.ts,d.ts.map,js,js.map} test/app_test.{d.ts,d.ts.map,js,js.map}",
     "lint": "npm run lint:lit-analyzer && npm run lint:eslint",
     "lint:eslint": "eslint 'src/**/*.ts'",
@@ -18,11 +19,6 @@
     "analyze:watch": "cem analyze --litelement --globs \"src/**/*.ts\" --watch",
     "serve": "wds --watch",
     "serve:prod": "MODE=prod npm run serve",
-    "test": "npm run test:dev && npm run test:prod",
-    "test:dev": "wtr",
-    "test:watch": "wtr --watch",
-    "test:prod": "MODE=prod wtr",
-    "test:prod:watch": "MODE=prod wtr --watch",
     "checksize": "rollup -c ; cat app.bundled.js | gzip -9 | wc -c ; rm app.bundled.js"
   },
   "keywords": [
@@ -32,9 +28,10 @@
     "lit"
   ],
   "author": "Sufyan Abbasi",
-  "license": "BSD-3-Clause",
+  "license": "MIT",
   "dependencies": {
     "@polymer/app-layout": "^3.1.0",
+    "@polymer/iron-icon": "^3.0.1",
     "@polymer/iron-icons": "^3.0.1",
     "@polymer/paper-button": "^3.0.1",
     "@polymer/paper-checkbox": "^3.1.0",
@@ -54,9 +51,6 @@
     "@web/dev-server": "^0.1.22",
     "@web/dev-server-legacy": "^0.1.4",
     "@web/dev-server-rollup": "^0.3.9",
-    "@web/test-runner": "^0.13.16",
-    "@web/test-runner-mocha": "^0.7.4",
-    "@web/test-runner-playwright": "^0.8.4",
     "@webcomponents/webcomponentsjs": "^2.6.0",
     "deepmerge": "^4.2.2",
     "eslint": "^7.32.0",
