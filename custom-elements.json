@@ -1,70 +1,707 @@
 {
-  "version": "experimental",
-  "tags": [
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
     {
-      "name": "my-element",
-      "path": "./src/my-element.ts",
-      "description": "An example element.",
-      "attributes": [
+      "kind": "javascript-module",
+      "path": "src/app.ts",
+      "declarations": [
         {
-          "name": "name",
-          "description": "The name to say \"Hello\" to.",
-          "type": "string",
-          "default": "\"World\""
-        },
-        {
-          "name": "count",
-          "description": "The number of times the button has been clicked.",
-          "type": "number",
-          "default": "0"
+          "kind": "class",
+          "description": "",
+          "name": "App",
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "butterfly-app",
+          "customElement": true
         }
       ],
-      "properties": [
+      "exports": [
         {
-          "name": "name",
-          "attribute": "name",
-          "description": "The name to say \"Hello\" to.",
-          "type": "string",
-          "default": "\"World\""
+          "kind": "js",
+          "name": "App",
+          "declaration": {
+            "name": "App",
+            "module": "src/app.ts"
+          }
         },
         {
-          "name": "count",
-          "attribute": "count",
-          "description": "The number of times the button has been clicked.",
-          "type": "number",
-          "default": "0"
-        },
-        {
-          "name": "renderRoot",
-          "description": "Node or ShadowRoot into which element DOM should be rendered. Defaults\nto an open shadowRoot.",
-          "type": "HTMLElement | ShadowRoot"
-        },
-        {
-          "name": "isUpdatePending",
-          "type": "boolean"
-        },
-        {
-          "name": "hasUpdated",
-          "type": "boolean"
-        },
-        {
-          "name": "updateComplete",
-          "description": "Returns a Promise that resolves when the element has completed updating.\nThe Promise value is a boolean that is `true` if the element completed the\nupdate without triggering another update. The Promise result is `false` if\na property was set inside `updated()`. If the Promise is rejected, an\nexception was thrown during the update.\n\nTo await additional asynchronous work, override the `getUpdateComplete`\nmethod. For example, it is sometimes useful to await a rendered element\nbefore fulfilling this Promise. To do this, first await\n`super.getUpdateComplete()`, then any subsequent state.",
-          "type": "Promise<boolean>"
-        }
-      ],
-      "slots": [
-        {
-          "name": "",
-          "description": "This element has a slot"
-        }
-      ],
-      "cssParts": [
-        {
-          "name": "button",
-          "description": "The button"
+          "kind": "custom-element-definition",
+          "name": "butterfly-app",
+          "declaration": {
+            "name": "App",
+            "module": "src/app.ts"
+          }
         }
       ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/data-source-list.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "DataSourceList",
+          "members": [
+            {
+              "kind": "field",
+              "name": "dataSources",
+              "default": "[\n    {\n        title: 'The Benzene Report',\n        description: 'Refineries reporting of two-week average benzene levels to the EPA every three months.',\n        tags: new Set(['benzene', 'valero', 'valero-benicia', 'marathon-martinez', 'martinez', 'benicia']),\n        startTime: new Date(0),\n        endTime: new Date(0),\n        filters: deepCopy<FilterSource[]>(FILTERS),\n    },\n    {\n        title: \"Valero Benicia\",\n        description: \"Valero Refinery self reporting, real-time data\",\n        tags: new Set(['benzene', 'xylene', 'valero', 'valero-benicia', 'benicia']),\n        startTime: new Date(0),\n        endTime: new Date(0),\n        filters: deepCopy<FilterSource[]>(FILTERS),\n    },\n    {\n        title: \"Marathon Martinez\",\n        description: \"Marathon Martinez Refinery self reporting, real-time data\",\n        tags: new Set(['benzene', 'carbon-monoxide', 'martinez', 'marathon-martinez']),\n        startTime: new Date(0),\n        endTime: new Date(0),\n        filters: deepCopy<FilterSource[]>(FILTERS),\n    },\n]",
+              "attribute": "dataSources",
+              "type": {
+                "text": "array"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "filterTags",
+              "default": "new Set<string>()",
+              "attribute": "filterTags"
+            },
+            {
+              "kind": "field",
+              "name": "disableTags",
+              "default": "new Set<string>()",
+              "attribute": "disableTags"
+            },
+            {
+              "kind": "field",
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "expanded"
+            },
+            {
+              "kind": "method",
+              "name": "renderDataSources"
+            },
+            {
+              "kind": "method",
+              "name": "handleTagsChanged",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent<Set<string>>"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "dataSources",
+              "default": "DATA_SOURCES",
+              "resolveInitializer": {
+                "module": "src/data-source-list.ts"
+              },
+              "fieldName": "dataSources"
+            },
+            {
+              "name": "filterTags",
+              "default": "new Set<string>()",
+              "fieldName": "filterTags"
+            },
+            {
+              "name": "disableTags",
+              "default": "new Set<string>()",
+              "fieldName": "disableTags"
+            },
+            {
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "expanded"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "data-source-list",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DataSourceList",
+          "declaration": {
+            "name": "DataSourceList",
+            "module": "src/data-source-list.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "data-source-list",
+          "declaration": {
+            "name": "DataSourceList",
+            "module": "src/data-source-list.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/data-source.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "DataSourceElement",
+          "members": [
+            {
+              "kind": "field",
+              "name": "data",
+              "type": {
+                "text": "DataSource"
+              },
+              "default": "{\n        title: \"\",\n        description: \"\",\n        tags: new Set<string>([]),\n        startTime: new Date(0),\n        endTime: new Date(0),\n        filters: [],\n    }",
+              "attribute": "data"
+            },
+            {
+              "kind": "field",
+              "name": "expand",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "expand"
+            },
+            {
+              "kind": "field",
+              "name": "hide",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "hide"
+            },
+            {
+              "kind": "field",
+              "name": "showTags",
+              "default": "new Set<string>([])",
+              "attribute": "showTags"
+            },
+            {
+              "kind": "field",
+              "name": "forExport",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "forExport"
+            },
+            {
+              "kind": "field",
+              "name": "selectedStartTime",
+              "default": "new Date(0)",
+              "attribute": "selectedStartTime"
+            },
+            {
+              "kind": "field",
+              "name": "selectedEndTime",
+              "default": "new Date(0)",
+              "attribute": "selectedEndTime"
+            },
+            {
+              "kind": "method",
+              "name": "renderSummary"
+            },
+            {
+              "kind": "method",
+              "name": "renderFilterSummary",
+              "parameters": [
+                {
+                  "name": "showChecked",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderTimeSummary",
+              "parameters": [
+                {
+                  "name": "showSelectedTime",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderSummaryButtons"
+            },
+            {
+              "kind": "method",
+              "name": "renderModal"
+            }
+          ],
+          "events": [
+            {
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "data",
+              "type": {
+                "text": "DataSource"
+              },
+              "default": "{\n        title: \"\",\n        description: \"\",\n        tags: new Set<string>([]),\n        startTime: new Date(0),\n        endTime: new Date(0),\n        filters: [],\n    }",
+              "fieldName": "data"
+            },
+            {
+              "name": "expand",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "expand"
+            },
+            {
+              "name": "hide",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "hide"
+            },
+            {
+              "name": "showTags",
+              "default": "new Set<string>([])",
+              "fieldName": "showTags"
+            },
+            {
+              "name": "forExport",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "forExport"
+            },
+            {
+              "name": "selectedStartTime",
+              "default": "new Date(0)",
+              "fieldName": "selectedStartTime"
+            },
+            {
+              "name": "selectedEndTime",
+              "default": "new Date(0)",
+              "fieldName": "selectedEndTime"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "data-source",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DataSourceElement",
+          "declaration": {
+            "name": "DataSourceElement",
+            "module": "src/data-source.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "data-source",
+          "declaration": {
+            "name": "DataSourceElement",
+            "module": "src/data-source.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/filter-list.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "FilterListElement",
+          "members": [
+            {
+              "kind": "field",
+              "name": "timer",
+              "type": {
+                "text": "number|null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "disableTags",
+              "default": "new Set<string>()",
+              "attribute": "disableTags"
+            },
+            {
+              "kind": "field",
+              "name": "filters",
+              "type": {
+                "text": "FilterSource[]"
+              },
+              "default": "[]",
+              "attribute": "filters"
+            },
+            {
+              "kind": "method",
+              "name": "handleCheckedChanged"
+            },
+            {
+              "kind": "method",
+              "name": "getShownTags"
+            }
+          ],
+          "events": [
+            {
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "disableTags",
+              "default": "new Set<string>()",
+              "fieldName": "disableTags"
+            },
+            {
+              "name": "filters",
+              "type": {
+                "text": "FilterSource[]"
+              },
+              "default": "[]",
+              "fieldName": "filters"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "filter-list",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "FilterListElement",
+          "declaration": {
+            "name": "FilterListElement",
+            "module": "src/filter-list.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "filter-list",
+          "declaration": {
+            "name": "FilterListElement",
+            "module": "src/filter-list.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/filter-source.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "FilterSourceElement",
+          "members": [
+            {
+              "kind": "field",
+              "name": "header",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "attribute": "header"
+            },
+            {
+              "kind": "field",
+              "name": "filters",
+              "type": {
+                "text": "Filter[]"
+              },
+              "default": "[]",
+              "attribute": "filters"
+            },
+            {
+              "kind": "field",
+              "name": "disableTags",
+              "default": "new Set<string>()",
+              "attribute": "disableTags"
+            },
+            {
+              "kind": "method",
+              "name": "renderFilters",
+              "return": {
+                "type": {
+                  "text": "TemplateResult| typeof nothing"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "filters",
+                  "type": {
+                    "text": "Filter[]"
+                  }
+                },
+                {
+                  "name": "level",
+                  "default": "0"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "updateFilter",
+              "parameters": [
+                {
+                  "name": "filter",
+                  "type": {
+                    "text": "Filter"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "header",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "fieldName": "header"
+            },
+            {
+              "name": "filters",
+              "type": {
+                "text": "Filter[]"
+              },
+              "default": "[]",
+              "fieldName": "filters"
+            },
+            {
+              "name": "disableTags",
+              "default": "new Set<string>()",
+              "fieldName": "disableTags"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "filter-source",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "FilterSourceElement",
+          "declaration": {
+            "name": "FilterSourceElement",
+            "module": "src/filter-source.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "filter-source",
+          "declaration": {
+            "name": "FilterSourceElement",
+            "module": "src/filter-source.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/my-element.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "An example element.",
+          "name": "MyElement",
+          "cssParts": [
+            {
+              "description": "The button",
+              "name": "button"
+            }
+          ],
+          "slots": [
+            {
+              "description": "This element has a slot",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "'World'",
+              "description": "The name to say \"Hello\" to.",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "The number of times the button has been clicked.",
+              "attribute": "count"
+            },
+            {
+              "kind": "method",
+              "name": "_onClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "sayHello",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "name",
+                  "type": {
+                    "text": "string"
+                  },
+                  "description": "The name to say \"Hello\" to"
+                }
+              ],
+              "description": "Formats a greeting"
+            }
+          ],
+          "events": [
+            {
+              "name": "count-changed",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Indicates when the count changes"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "'World'",
+              "description": "The name to say \"Hello\" to.",
+              "fieldName": "name"
+            },
+            {
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "The number of times the button has been clicked.",
+              "fieldName": "count"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "my-element",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MyElement",
+          "declaration": {
+            "name": "MyElement",
+            "module": "src/my-element.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "my-element",
+          "declaration": {
+            "name": "MyElement",
+            "module": "src/my-element.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/utils.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "deepCopy",
+          "parameters": [
+            {
+              "name": "obj",
+              "type": {
+                "text": "T"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "deepCopy",
+          "declaration": {
+            "name": "deepCopy",
+            "module": "src/utils.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/test/my-element_test.ts",
+      "declarations": [],
+      "exports": []
     }
   ]
 }

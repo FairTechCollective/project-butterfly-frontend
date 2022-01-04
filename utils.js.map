@@ -1,1 +1,0 @@
-{"version":3,"file":"utils.js","sourceRoot":"","sources":["src/utils.ts"],"names":[],"mappings":"AAAA,MAAM,UAAU,QAAQ,CAAI,GAAM;IAC/B,OAAO,IAAI,CAAC,KAAK,CAAC,IAAI,CAAC,SAAS,CAAC,GAAG,CAAC,CAAM,CAAA;AAC9C,CAAC","sourcesContent":["export function deepCopy<T>(obj: T) { \n   return JSON.parse(JSON.stringify(obj)) as T\n}"]}

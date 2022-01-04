@@ -109,23 +109,23 @@ export class DataSourceElement extends LitElement {
 
     renderFilterSummary(showChecked: boolean) {
         const summary: TemplateResult[] = [];
-        for (const source of this.data.filters) {
-            const labels: TemplateResult[] = [];
-            function findLeafTags(filters: Filter[]) {
-                for (const filter of filters) {
-                    if (filter.options.length) {
-                        findLeafTags(filter.options);
-                    } else {
-                        if (!showChecked || filter.checked) {
-                            labels.push(
-                                html`<a class="tag" href="#">
-                                    ${filter.label}
-                                </a>`);
-                        }
+        const findLeafTags = (filters: Filter[], labels: TemplateResult[]) => {
+            for (const filter of filters) {
+                if (filter.options.length) {
+                    findLeafTags(filter.options, labels);
+                } else {
+                    if (!showChecked || filter.checked) {
+                        labels.push(
+                            html`<a class="tag" href="#">
+                                ${filter.label}
+                            </a>`);
                     }
                 }
             }
-            findLeafTags(source.filters)
+        };
+        for (const source of this.data.filters) {
+            const labels: TemplateResult[] = [];
+            findLeafTags(source.filters, labels)
             summary.push(html`<p>
                 <span>${source.header}: </span>
                 ${labels}
