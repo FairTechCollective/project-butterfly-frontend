@@ -13,6 +13,7 @@ export declare class DataSourceList extends LitElement {
     }[];
     filterTags: Set<string>;
     disableTags: Set<string>;
+    expanded: boolean;
     static styles: import("lit").CSSResult;
     render(): import("lit-html").TemplateResult<1>;
     renderDataSources(): import("lit-html").TemplateResult<1>[];

@@ -4,9 +4,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+import '@polymer/iron-icon/iron-icon.js';
+import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/paper-button/paper-button.js';
+import '@polymer/paper-icon-button/paper-icon-button.js';
+import './filter-list';
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+export var DataSourceEvent;
+(function (DataSourceEvent) {
+    DataSourceEvent["REQUEST_EXPAND"] = "request-expand";
+    DataSourceEvent["REQUEST_CLOSE"] = "request-close";
+})(DataSourceEvent || (DataSourceEvent = {}));
 let DataSourceElement = class DataSourceElement extends LitElement {
     constructor() {
         super(...arguments);
@@ -19,13 +28,14 @@ let DataSourceElement = class DataSourceElement extends LitElement {
             filters: [],
         };
         this.expand = false;
+        this.hide = false;
         this.showTags = new Set([]);
         this.forExport = false;
         this.selectedStartTime = new Date(0);
         this.selectedEndTime = new Date(0);
     }
     render() {
-        if (this.showTags.size &&
+        if ((this.hide && !this.expand) || this.showTags.size &&
             ![...this.data.tags].filter(x => this.showTags.has(x)).length) {
             return nothing;
         }
@@ -111,13 +121,38 @@ let DataSourceElement = class DataSourceElement extends LitElement {
         </section>`;
     }
     renderSummaryButtons() {
-        let buttons = html `<paper-button>Select</paper-button>`;
+        let buttons = html `<paper-button
+            @click="${() => {
+            this.dispatchEvent(new CustomEvent(DataSourceEvent.REQUEST_EXPAND));
+        }}">Select</paper-button>`;
         if (this.forExport) {
             buttons = html `<paper-button>Download</paper-button>`;
         }
         return buttons;
     }
     renderModal() {
+        return html `
+            <article>
+                <div class="row button-container">
+                    <div class="row close-container">
+                        <paper-icon-button
+                            icon="icons:close"
+                            @click="${() => {
+            this.dispatchEvent(new CustomEvent(DataSourceEvent.REQUEST_CLOSE));
+        }}">
+                        </paper-icon-button>
+                        <h3>${this.data.title}</h3>
+                    </div>
+                    <div class="row">
+                        <paper-button>Add to Queue</paper-button>
+                        <paper-button>Download Now <iron-icon icon="icons:arrow-drop-down"></iron-icon></paper-button>
+                    </div>
+                </div>
+                <p>${this.data.description}</p>
+                <filter-list
+                    .filters="${this.data.filters}">
+                </filter-list>
+            </article>`;
     }
 };
 DataSourceElement.styles = css `
@@ -130,7 +165,7 @@ DataSourceElement.styles = css `
         }
 
         h3 {
-            margin-top: 0;
+            margin: 0;
         }
 
         .row {
@@ -151,6 +186,14 @@ DataSourceElement.styles = css `
             text-decoration: none;
             border-radius: 8px;
         }
+
+        .button-container {
+            margin-top: -20px;
+        }
+
+        .close-container {
+            margin-left: -20px;
+        }
     `;
 __decorate([
     property({ type: Object })
@@ -158,6 +201,9 @@ __decorate([
 __decorate([
     property({ type: Boolean })
 ], DataSourceElement.prototype, "expand", void 0);
+__decorate([
+    property({ type: Boolean })
+], DataSourceElement.prototype, "hide", void 0);
 __decorate([
     property({ type: Object })
 ], DataSourceElement.prototype, "showTags", void 0);

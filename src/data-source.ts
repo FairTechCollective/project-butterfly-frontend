@@ -1,4 +1,9 @@
+import '@polymer/iron-icon/iron-icon.js';
+import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/paper-button/paper-button.js';
+import '@polymer/paper-icon-button/paper-icon-button.js';
+
+import './filter-list';
 
 import {LitElement, TemplateResult, html, css, nothing} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
@@ -8,10 +13,15 @@ import {Filter, FilterSource} from './filter-source';
 export interface DataSource {
     title: string;
     description: string;
-    tags: Set<string>,
+    tags: Set<string>;
     startTime: Date;
     endTime: Date;
     filters: FilterSource[];
+}
+
+export enum DataSourceEvent {
+    REQUEST_EXPAND='request-expand',
+    REQUEST_CLOSE='request-close',
 }
 
 @customElement('data-source')
@@ -27,6 +37,7 @@ export class DataSourceElement extends LitElement {
     };
     
     @property({type: Boolean}) expand = false;
+    @property({type: Boolean}) hide = false;
     @property({type: Object}) showTags = new Set<string>([]);
     @property({type: Boolean}) forExport = false;
     @property({type: Object}) selectedStartTime = new Date(0);
@@ -42,7 +53,7 @@ export class DataSourceElement extends LitElement {
         }
 
         h3 {
-            margin-top: 0;
+            margin: 0;
         }
 
         .row {
@@ -63,10 +74,18 @@ export class DataSourceElement extends LitElement {
             text-decoration: none;
             border-radius: 8px;
         }
+
+        .button-container {
+            margin-top: -20px;
+        }
+
+        .close-container {
+            margin-left: -20px;
+        }
     `;
 
     override render() {
-        if (this.showTags.size && 
+        if ((this.hide && !this.expand) || this.showTags.size && 
             ![...this.data.tags].filter(x => this.showTags.has(x)).length) {
             return nothing;    
         } else if (this.expand) {
@@ -154,7 +173,11 @@ export class DataSourceElement extends LitElement {
     }
 
     renderSummaryButtons() {
-        let buttons = html`<paper-button>Select</paper-button>`;
+        let buttons = html`<paper-button
+            @click="${() => {
+                this.dispatchEvent(
+                    new CustomEvent(DataSourceEvent.REQUEST_EXPAND));
+            }}">Select</paper-button>`;
         if (this.forExport) {
             buttons = html`<paper-button>Download</paper-button>`;
         }
@@ -162,7 +185,29 @@ export class DataSourceElement extends LitElement {
     }
 
     renderModal() {
-
+        return html`
+            <article>
+                <div class="row button-container">
+                    <div class="row close-container">
+                        <paper-icon-button
+                            icon="icons:close"
+                            @click="${() => {
+                                this.dispatchEvent(
+                                    new CustomEvent(DataSourceEvent.REQUEST_CLOSE));
+                            }}">
+                        </paper-icon-button>
+                        <h3>${this.data.title}</h3>
+                    </div>
+                    <div class="row">
+                        <paper-button>Add to Queue</paper-button>
+                        <paper-button>Download Now <iron-icon icon="icons:arrow-drop-down"></iron-icon></paper-button>
+                    </div>
+                </div>
+                <p>${this.data.description}</p>
+                <filter-list
+                    .filters="${this.data.filters}">
+                </filter-list>
+            </article>`;
     }
 }
 

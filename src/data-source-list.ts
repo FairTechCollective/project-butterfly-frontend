@@ -3,8 +3,10 @@ import './data-source';
 
 import {LitElement, html, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
+import {styleMap} from 'lit/directives/style-map.js'
 
 import {Filter, FilterSource} from './filter-source';
+import {DataSourceElement} from './data-source';
 import {deepCopy} from './utils';
 
 const FILTERS = [
@@ -113,6 +115,7 @@ export class DataSourceList extends LitElement {
     @property({type: Array}) dataSources = DATA_SOURCES;
     @property({type: Object}) filterTags = new Set<string>();
     @property({type: Object}) disableTags = new Set<string>();
+    @property({type: Boolean}) expanded = false;
 
     static override styles = css`
         .row {
@@ -126,7 +129,7 @@ export class DataSourceList extends LitElement {
 
         .sources {
             flex-grow: 5;
-            overflow: auto;
+            overflow: scroll;
             height: calc(100vh - 100px);
         }
 
@@ -140,6 +143,9 @@ export class DataSourceList extends LitElement {
         return html`
             <div class="row">
                 <filter-list
+                    style="${styleMap({
+                        display: this.expanded ? 'none' : 'block',
+                    })}"
                     .filters="${FILTERS}"
                     .disableTags="${this.disableTags}"
                     @tags-changed="${this.handleTagsChanged}">
@@ -155,7 +161,17 @@ export class DataSourceList extends LitElement {
         return this.dataSources.map((data) => html`
             <data-source
                 .data="${data}"
-                .showTags="${this.filterTags}">
+                .showTags="${this.filterTags}"
+                .hide="${this.expanded}"
+                @request-expand="${(e: CustomEvent) => {
+                    (e.target as DataSourceElement).expand = true;
+                    this.expanded = true;
+                }}"
+                @request-close="${(e: CustomEvent) => {
+                    (e.target as DataSourceElement).expand = false;
+                    this.expanded = false;
+                }}"
+                >
             </data-source>
         `);
     }

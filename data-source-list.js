@@ -8,6 +8,7 @@ import './filter-list';
 import './data-source';
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { styleMap } from 'lit/directives/style-map.js';
 import { deepCopy } from './utils';
 const FILTERS = [
     {
@@ -114,11 +115,15 @@ let DataSourceList = class DataSourceList extends LitElement {
         this.dataSources = DATA_SOURCES;
         this.filterTags = new Set();
         this.disableTags = new Set();
+        this.expanded = false;
     }
     render() {
         return html `
             <div class="row">
                 <filter-list
+                    style="${styleMap({
+            display: this.expanded ? 'none' : 'block',
+        })}"
                     .filters="${FILTERS}"
                     .disableTags="${this.disableTags}"
                     @tags-changed="${this.handleTagsChanged}">
@@ -133,7 +138,17 @@ let DataSourceList = class DataSourceList extends LitElement {
         return this.dataSources.map((data) => html `
             <data-source
                 .data="${data}"
-                .showTags="${this.filterTags}">
+                .showTags="${this.filterTags}"
+                .hide="${this.expanded}"
+                @request-expand="${(e) => {
+            e.target.expand = true;
+            this.expanded = true;
+        }}"
+                @request-close="${(e) => {
+            e.target.expand = false;
+            this.expanded = false;
+        }}"
+                >
             </data-source>
         `);
     }
@@ -180,7 +195,7 @@ DataSourceList.styles = css `
 
         .sources {
             flex-grow: 5;
-            overflow: auto;
+            overflow: scroll;
             height: calc(100vh - 100px);
         }
 
@@ -198,6 +213,9 @@ __decorate([
 __decorate([
     property({ type: Object })
 ], DataSourceList.prototype, "disableTags", void 0);
+__decorate([
+    property({ type: Boolean })
+], DataSourceList.prototype, "expanded", void 0);
 DataSourceList = __decorate([
     customElement('data-source-list')
 ], DataSourceList);
