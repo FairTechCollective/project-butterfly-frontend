@@ -1,6 +1,6 @@
-# LitElement TypeScript starter
+# Project Butterfly
 
-This project includes a sample component using LitElement with TypeScript.
+This is the frontend application for Project Butterfly.
 
 ## Setup
 
@@ -26,29 +26,14 @@ To watch files and rebuild when the files are modified, run the following comman
 npm run build:watch
 ```
 
+
+To build the static site to `docs/` for Github Pages, run:
+
+```bash
+npm run build:static
+```
+
 Both the TypeScript compiler and lit-analyzer are configured to be very strict. You may want to change `tsconfig.json` to make them less strict.
-
-## Testing
-
-This sample uses modern-web.dev's
-[@web/test-runner](https://www.npmjs.com/package/@web/test-runner) along with
-Mocha, Chai, and some related helpers for testing. See the
-[modern-web.dev testing documentation](https://modern-web.dev/docs/test-runner/overview) for
-more information.
-
-Tests can be run with the `test` script, which will run your tests against Lit's development mode (with more verbose errors) as well as against Lit's production mode:
-
-```bash
-npm test
-```
-
-For local testing during development, the `test:dev:watch` command will run your tests in Lit's development mode (with verbose errors) on every change to your source files:
-
-```bash
-npm test:watch
-```
-
-Alternatively the `test:prod` and `test:prod:watch` commands will run your tests in Lit's production mode.
 
 ## Dev Server
 
