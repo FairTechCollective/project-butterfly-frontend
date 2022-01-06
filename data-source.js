@@ -36,7 +36,7 @@ let DataSourceElement = class DataSourceElement extends LitElement {
     }
     render() {
         if ((this.hide && !this.expand) || this.showTags.size &&
-            ![...this.data.tags].filter(x => this.showTags.has(x)).length) {
+            [...this.showTags].some(tag => !this.data.tags.has(tag))) {
             return nothing;
         }
         else if (this.expand) {

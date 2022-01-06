@@ -185,13 +185,8 @@ export class DataSourceList extends LitElement {
         const unfilteredTags = new Set<string>();
         const filteredOutTags = new Set<string>();
         for (const dataSource of this.dataSources) {
-            let hasTag = false;
-            for (const tag of dataSource.tags) {
-                if (this.filterTags.has(tag)) {
-                    hasTag = true;
-                }
-            }
-            if (hasTag) {
+            const showSource = [...this.filterTags].every(tag=>dataSource.tags.has(tag));
+            if (showSource) {
                 for (const tag of dataSource.tags) {
                     unfilteredTags.add(tag);
                 }
@@ -201,9 +196,10 @@ export class DataSourceList extends LitElement {
                 }
             }
         }
-        const disableTags = new Set([...filteredOutTags]
-                            .filter(x => !unfilteredTags.has(x)));
-        this.disableTags = disableTags;
+        for (const tag of unfilteredTags) {
+            filteredOutTags.delete(tag);
+        }
+        this.disableTags = filteredOutTags;
     }
 }
 
