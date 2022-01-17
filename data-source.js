@@ -9,12 +9,15 @@ import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import './filter-list';
+import './file-format-selector';
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { deepCopy } from './utils';
 export var DataSourceEvent;
 (function (DataSourceEvent) {
-    DataSourceEvent["REQUEST_EXPAND"] = "request-expand";
     DataSourceEvent["REQUEST_CLOSE"] = "request-close";
+    DataSourceEvent["REQUEST_DOWNLOAD"] = "request-download";
+    DataSourceEvent["REQUEST_EXPAND"] = "request-expand";
 })(DataSourceEvent || (DataSourceEvent = {}));
 let DataSourceElement = class DataSourceElement extends LitElement {
     constructor() {
@@ -49,12 +52,25 @@ let DataSourceElement = class DataSourceElement extends LitElement {
     renderSummary() {
         return html `
             <article>
-                <h3>${this.data.title}</h3>
-                <p>${this.data.description}</p>
+                ${this.renderDescription()}
                 ${this.renderFilterSummary(this.forExport)}
                 ${this.renderTimeSummary(this.forExport)}
                 ${this.renderSummaryButtons()}
             </article>
+        `;
+    }
+    renderDescription() {
+        if (this.forExport) {
+            return html `
+                <p>
+                    <span class="title">${this.data.title}</span>:
+                    ${this.data.description}
+                </p>
+            `;
+        }
+        return html `
+            <h3>${this.data.title}</h3>
+            <p>${this.data.description}</p>
         `;
     }
     renderFilterSummary(showChecked) {
@@ -81,9 +97,7 @@ let DataSourceElement = class DataSourceElement extends LitElement {
                 ${labels}
             </p>`);
         }
-        return html `<section>
-            ${summary}
-        </section>`;
+        return html `<section>${summary}</section>`;
     }
     renderTimeSummary(showSelectedTime) {
         function summarizeDate(d) {
@@ -126,7 +140,7 @@ let DataSourceElement = class DataSourceElement extends LitElement {
             this.dispatchEvent(new CustomEvent(DataSourceEvent.REQUEST_EXPAND));
         }}">Select</paper-button>`;
         if (this.forExport) {
-            buttons = html `<paper-button>Download</paper-button>`;
+            buttons = html `<file-format-download></file-format-download>`;
         }
         return buttons;
     }
@@ -144,19 +158,24 @@ let DataSourceElement = class DataSourceElement extends LitElement {
                         <h3>${this.data.title}</h3>
                     </div>
                     <div class="row">
-                        <paper-button>Add to Queue</paper-button>
-                        <paper-button>Download Now <iron-icon icon="icons:arrow-drop-down"></iron-icon></paper-button>
+                        <paper-button @click="${this.requestQueue}">Add to Queue</paper-button>
+                        <file-format-download></file-format-download>
                     </div>
                 </div>
                 <p>${this.data.description}</p>
-                <filter-list
-                    .filters="${this.data.filters}">
+                <filter-list .filters="${this.data.filters}">
                 </filter-list>
             </article>`;
     }
+    requestQueue() {
+        this.dispatchEvent(new CustomEvent(DataSourceEvent.REQUEST_DOWNLOAD, {
+            detail: deepCopy(this.data),
+            bubbles: true,
+            composed: true
+        }));
+    }
 };
 DataSourceElement.styles = css `
-
         article {
             background-color: #e6e4e4;
             border-radius: 8px;
@@ -166,6 +185,10 @@ DataSourceElement.styles = css `
 
         h3 {
             margin: 0;
+        }
+
+        span.title {
+            font-weight: bold;
         }
 
         .row {
@@ -181,6 +204,7 @@ DataSourceElement.styles = css `
         .tag {
             background-color: springgreen;
             color: white;
+            display: inline-block;
             margin: 2px;
             padding: 5px;
             text-decoration: none;

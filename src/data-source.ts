@@ -4,10 +4,12 @@ import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 
 import './filter-list';
+import './file-format-selector';
 
 import {LitElement, TemplateResult, html, css, nothing} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 
+import {deepCopy} from './utils';
 import {Filter, FilterSource} from './filter-source';
 
 export interface DataSource {
@@ -20,8 +22,9 @@ export interface DataSource {
 }
 
 export enum DataSourceEvent {
-    REQUEST_EXPAND='request-expand',
     REQUEST_CLOSE='request-close',
+    REQUEST_DOWNLOAD='request-download',
+    REQUEST_EXPAND='request-expand',
 }
 
 @customElement('data-source')
@@ -44,7 +47,6 @@ export class DataSourceElement extends LitElement {
     @property({type: Object}) selectedEndTime = new Date(0);
 
     static override styles = css`
-
         article {
             background-color: #e6e4e4;
             border-radius: 8px;
@@ -54,6 +56,10 @@ export class DataSourceElement extends LitElement {
 
         h3 {
             margin: 0;
+        }
+
+        span.title {
+            font-weight: bold;
         }
 
         .row {
@@ -69,6 +75,7 @@ export class DataSourceElement extends LitElement {
         .tag {
             background-color: springgreen;
             color: white;
+            display: inline-block;
             margin: 2px;
             padding: 5px;
             text-decoration: none;
@@ -95,11 +102,10 @@ export class DataSourceElement extends LitElement {
         }
     }
 
-    renderSummary() {
+    private renderSummary() {
         return html`
             <article>
-                <h3>${this.data.title}</h3>
-                <p>${this.data.description}</p>
+                ${this.renderDescription()}
                 ${this.renderFilterSummary(this.forExport)}
                 ${this.renderTimeSummary(this.forExport)}
                 ${this.renderSummaryButtons()}
@@ -107,7 +113,22 @@ export class DataSourceElement extends LitElement {
         `;
     }
 
-    renderFilterSummary(showChecked: boolean) {
+    private renderDescription() {
+        if (this.forExport) {
+            return html`
+                <p>
+                    <span class="title">${this.data.title}</span>:
+                    ${this.data.description}
+                </p>
+            `;
+        }
+        return html`
+            <h3>${this.data.title}</h3>
+            <p>${this.data.description}</p>
+        `;
+    }
+
+    private renderFilterSummary(showChecked: boolean) {
         const summary: TemplateResult[] = [];
         const findLeafTags = (filters: Filter[], labels: TemplateResult[]) => {
             for (const filter of filters) {
@@ -131,12 +152,10 @@ export class DataSourceElement extends LitElement {
                 ${labels}
             </p>`);
         }
-        return html`<section>
-            ${summary}
-        </section>`;
+        return html`<section>${summary}</section>`;
     }
 
-    renderTimeSummary(showSelectedTime: boolean) {
+    private renderTimeSummary(showSelectedTime: boolean) {
         function summarizeDate(d: Date) {
             const year = d.getFullYear();
             const date = d.getDate();
@@ -172,19 +191,19 @@ export class DataSourceElement extends LitElement {
         </section>`;
     }
 
-    renderSummaryButtons() {
+    private renderSummaryButtons() {
         let buttons = html`<paper-button
             @click="${() => {
                 this.dispatchEvent(
                     new CustomEvent(DataSourceEvent.REQUEST_EXPAND));
             }}">Select</paper-button>`;
         if (this.forExport) {
-            buttons = html`<paper-button>Download</paper-button>`;
+            buttons = html`<file-format-download></file-format-download>`;
         }
         return buttons;
     }
 
-    renderModal() {
+    private renderModal() {
         return html`
             <article>
                 <div class="row button-container">
@@ -199,15 +218,26 @@ export class DataSourceElement extends LitElement {
                         <h3>${this.data.title}</h3>
                     </div>
                     <div class="row">
-                        <paper-button>Add to Queue</paper-button>
-                        <paper-button>Download Now <iron-icon icon="icons:arrow-drop-down"></iron-icon></paper-button>
+                        <paper-button @click="${this.requestQueue}">Add to Queue</paper-button>
+                        <file-format-download></file-format-download>
                     </div>
                 </div>
                 <p>${this.data.description}</p>
-                <filter-list
-                    .filters="${this.data.filters}">
+                <filter-list .filters="${this.data.filters}">
                 </filter-list>
             </article>`;
+    }
+
+    private requestQueue() {
+        this.dispatchEvent(
+            new CustomEvent(
+                DataSourceEvent.REQUEST_DOWNLOAD, 
+                {
+                    detail: deepCopy(this.data),
+                    bubbles: true,
+                    composed: true
+                })
+        );
     }
 }
 
