@@ -5,6 +5,8 @@ import '@polymer/paper-icon-button/paper-icon-button.js';
 
 import './filter-list';
 import './file-format-selector';
+import './data-connectors';
+import './time-selector';
 
 import {LitElement, TemplateResult, html, css, nothing} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
@@ -90,6 +92,11 @@ export class DataSourceElement extends LitElement {
             margin-left: -20px;
         }
     `;
+
+    override firstUpdated() {
+        this.selectedStartTime = new Date(this.data.startTime);
+        this.selectedEndTime = new Date(this.data.endTime);
+    }
 
     override render() {
         if ((this.hide && !this.expand) || this.showTags.size && 
@@ -178,7 +185,7 @@ export class DataSourceElement extends LitElement {
             return `${monthName} ${date}, ${year}`
         }
         let startTime = this.data.startTime;
-        let endTime = this.data.startTime;
+        let endTime = this.data.endTime;
         if (showSelectedTime) {
             startTime = this.selectedStartTime;
             endTime = this.selectedEndTime;
@@ -218,22 +225,36 @@ export class DataSourceElement extends LitElement {
                         <h3>${this.data.title}</h3>
                     </div>
                     <div class="row">
-                        <paper-button @click="${this.requestQueue}">Add to Queue</paper-button>
+                        <paper-button
+                            @click="${this.requestQueue}">
+                            Add to Queue
+                        </paper-button>
                         <file-format-download></file-format-download>
                     </div>
                 </div>
                 <p>${this.data.description}</p>
+                <time-selector
+                  .startTime="${this.data.startTime}"
+                  .endTime="${this.data.endTime}"
+                  @set-time=${(e: CustomEvent<Date[]>) => {
+                      this.selectedStartTime = e.detail[0];
+                      this.selectedEndTime = e.detail[1];
+                  }}
+                ></time-selector>
                 <filter-list .filters="${this.data.filters}">
                 </filter-list>
             </article>`;
     }
 
     private requestQueue() {
+        const data = deepCopy(this.data);
+        data.startTime = this.selectedStartTime;
+        data.endTime = this.selectedEndTime;
         this.dispatchEvent(
             new CustomEvent(
                 DataSourceEvent.REQUEST_DOWNLOAD, 
                 {
-                    detail: deepCopy(this.data),
+                    detail: data,
                     bubbles: true,
                     composed: true
                 })

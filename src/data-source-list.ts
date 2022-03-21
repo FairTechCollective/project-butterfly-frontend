@@ -1,118 +1,158 @@
 import './filter-list';
 import './data-source';
 
-import {LitElement, html, css} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
+import {LitElement, html, css, nothing} from 'lit';
+import {customElement, property, state} from 'lit/decorators.js';
 import {styleMap} from 'lit/directives/style-map.js'
+import {until} from 'lit/directives/until.js'
+import {guard} from 'lit/directives/guard.js'
 
 import {Filter, FilterSource} from './filter-source';
-import {DataSourceElement} from './data-source';
-import {deepCopy} from './utils';
-
-const FILTERS = [
-    {
-        header: 'Locations',
-        filters: [{
-            label: 'Bay Area',
-            tag: 'bay-area',
-            checked: false,
-            options: [
-                {
-                    label: 'Cities',
-                    tag: 'cities',
-                    checked: false,
-                    options: [
-                        {
-                            label: 'Benicia',
-                            tag: 'benicia',
-                            options: [],
-                            checked: false,
-                        },
-                        {
-                            label: 'Martinez',
-                            tag: 'martinez',
-                            options: [],
-                            checked: false,
-                        },
-                    ],
-                },
-                {
-                    label: 'Refineries',
-                    tag: 'refineries',
-                    checked: false,
-                    options: [
-                        {
-                            label: 'Valero Benicia',
-                            tag: 'valero-benicia',
-                            options: [],
-                            checked: false,
-                        },
-                        {
-                            label: 'Marathon Martinez',
-                            tag: 'marathon-martinez',
-                            options: [],
-                            checked: false,
-                        },
-                    ],
-                }
-            ],
-        }],
-    },
-    {
-        header: 'Chemicals',
-        filters: [
-            {
-                label: 'Benzene',
-                tag: 'benzene',
-                checked: false,
-                options: [] as Filter[],
-            },
-            {
-                label: 'Xylene',
-                tag: 'xylene',
-                checked: false,
-                options: [] as Filter[],
-            },
-            {
-                label: 'Carbon Monoxide',
-                tag: 'carbon-monoxide',
-                checked: false,
-                options: [] as Filter[],
-            },
-    ]},
-];
+import {BenzeneReport} from './data-connectors';
+import {DataSource, DataSourceElement} from './data-source';
 
 const DATA_SOURCES = [
-    {
-        title: 'The Benzene Report',
-        description: 'Refineries reporting of two-week average benzene levels to the EPA every three months.',
-        tags: new Set(['benzene', 'valero', 'valero-benicia', 'marathon-martinez', 'martinez', 'benicia']),
-        startTime: new Date(0),
-        endTime: new Date(0),
-        filters: deepCopy<FilterSource[]>(FILTERS),
-    },
     {
         title: "Valero Benicia",
         description: "Valero Refinery self reporting, real-time data",
         tags: new Set(['benzene', 'xylene', 'valero', 'valero-benicia', 'benicia']),
         startTime: new Date(0),
         endTime: new Date(0),
-        filters: deepCopy<FilterSource[]>(FILTERS),
+        filters: [
+            {
+                header: 'Locations',
+                filters: [{
+                    label: 'Bay Area',
+                    tag: 'bay-area',
+                    checked: false,
+                    options: [
+                        {
+                            label: 'Cities',
+                            tag: 'cities',
+                            checked: false,
+                            options: [
+                                {
+                                    label: 'Benicia',
+                                    tag: 'benicia',
+                                    options: [],
+                                    checked: false,
+                                },
+                            ],
+                        },
+                        {
+                            label: 'Refineries',
+                            tag: 'refineries',
+                            checked: false,
+                            options: [
+                                {
+                                    label: 'Valero Benicia',
+                                    tag: 'valero-benicia',
+                                    options: [],
+                                    checked: false,
+                                },
+                            ],
+                        }
+                    ],
+                }],
+            },
+            {
+                header: 'Chemicals',
+                filters: [
+                    {
+                        label: 'Benzene',
+                        tag: 'benzene',
+                        checked: false,
+                        options: [] as Filter[],
+                    },
+                    {
+                        label: 'Xylene',
+                        tag: 'xylene',
+                        checked: false,
+                        options: [] as Filter[],
+                    },
+                    {
+                        label: 'Carbon Monoxide',
+                        tag: 'carbon-monoxide',
+                        checked: false,
+                        options: [] as Filter[],
+                    },
+            ]},
+        ],
     },
     {
-        title: "Marathon Martinez",
-        description: "Marathon Martinez Refinery self reporting, real-time data",
-        tags: new Set(['benzene', 'carbon-monoxide', 'martinez', 'marathon-martinez']),
+        title: "Tesoro Martinez",
+        description: "Tesoro Martinez Refinery self reporting, real-time data",
+        tags: new Set(['benzene', 'carbon-monoxide', 'martinez', 'tesoro-martinez']),
         startTime: new Date(0),
         endTime: new Date(0),
-        filters: deepCopy<FilterSource[]>(FILTERS),
+        filters: [
+            {
+                header: 'Locations',
+                filters: [{
+                    label: 'Bay Area',
+                    tag: 'bay-area',
+                    checked: false,
+                    options: [
+                        {
+                            label: 'Cities',
+                            tag: 'cities',
+                            checked: false,
+                            options: [
+                                {
+                                    label: 'Martinez',
+                                    tag: 'martinez',
+                                    options: [],
+                                    checked: false,
+                                },
+                            ],
+                        },
+                        {
+                            label: 'Refineries',
+                            tag: 'refineries',
+                            checked: false,
+                            options: [
+                                {
+                                    label: 'Tesoro Martinez',
+                                    tag: 'tesoro-martinez',
+                                    options: [],
+                                    checked: false,
+                                },
+                            ],
+                        }
+                    ],
+                }],
+            },
+            {
+                header: 'Chemicals',
+                filters: [
+                    {
+                        label: 'Benzene',
+                        tag: 'benzene',
+                        checked: false,
+                        options: [] as Filter[],
+                    },
+                    {
+                        label: 'Xylene',
+                        tag: 'xylene',
+                        checked: false,
+                        options: [] as Filter[],
+                    },
+                    {
+                        label: 'Carbon Monoxide',
+                        tag: 'carbon-monoxide',
+                        checked: false,
+                        options: [] as Filter[],
+                    },
+            ]},
+        ],
     },
 ]
 
 @customElement('data-source-list')
 export class DataSourceList extends LitElement {
-
-    @property({type: Array}) dataSources = DATA_SOURCES;
+    @state() private loaded:Promise<DataSource[]>|null = null;
+    @property({type: Array}) dataSources:DataSource[] = [];
+    @property({type: Array}) filters:FilterSource[] = [];
     @property({type: Object}) filterTags = new Set<string>();
     @property({type: Object}) disableTags = new Set<string>();
     @property({type: Boolean}) expanded = false;
@@ -130,7 +170,6 @@ export class DataSourceList extends LitElement {
         .sources {
             flex-grow: 5;
             overflow: scroll;
-            height: calc(100vh - 100px);
         }
 
         data-source {
@@ -142,38 +181,46 @@ export class DataSourceList extends LitElement {
     override render() {
         return html`
             <div class="row">
+                ${guard([this.loaded], () => until(this.loadDataSources(), nothing))}
                 <filter-list
                     style="${styleMap({
                         display: this.expanded ? 'none' : 'block',
                     })}"
-                    .filters="${FILTERS}"
+                    .filters="${this.filters}"
                     .disableTags="${this.disableTags}"
                     @tags-changed="${this.handleTagsChanged}">
                 </filter-list>
                 <div class="sources">
-                    ${this.renderDataSources()}
+                ${this.dataSources.map((data) => html`
+                    <data-source
+                        .data="${data}"
+                        .showTags="${this.filterTags}"
+                        .hide="${this.expanded}"
+                        @request-expand="${(e: CustomEvent) => {
+                            (e.target as DataSourceElement).expand = true;
+                            this.expanded = true;
+                        }}"
+                        @request-close="${(e: CustomEvent) => {
+                            (e.target as DataSourceElement).expand = false;
+                            this.expanded = false;
+                        }}"
+                        >
+                    </data-source>
+                `)}
                 </div>
             </div>
         `;
     }
 
-    renderDataSources() {
-        return this.dataSources.map((data) => html`
-            <data-source
-                .data="${data}"
-                .showTags="${this.filterTags}"
-                .hide="${this.expanded}"
-                @request-expand="${(e: CustomEvent) => {
-                    (e.target as DataSourceElement).expand = true;
-                    this.expanded = true;
-                }}"
-                @request-close="${(e: CustomEvent) => {
-                    (e.target as DataSourceElement).expand = false;
-                    this.expanded = false;
-                }}"
-                >
-            </data-source>
-        `);
+    async loadDataSources() {
+        if (!this.loaded) {
+            this.loaded = Promise.all([new BenzeneReport().getDataSource()]);
+            const dataSources = await this.loaded;
+            const benzeneReport = dataSources[0];
+            this.dataSources = [benzeneReport, ...DATA_SOURCES];
+            this.filters = benzeneReport.filters;
+        }
+        return nothing;
     }
 
     handleTagsChanged(e: CustomEvent<Set<string>>) {
