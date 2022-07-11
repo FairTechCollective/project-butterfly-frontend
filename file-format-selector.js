@@ -28,27 +28,26 @@ let FileFormatSelector = class FileFormatSelector extends LitElement {
     }
     render() {
         return html `
-            <paper-dropdown-menu label="File format">
-                <paper-listbox slot="dropdown-content">
-                    ${Object.values(FileFormat)
-            .map((format) => html `<paper-item>${format}</paper-item>`)}
-                </paper-listbox>
-            </paper-dropdown-menu>
-        `;
+      <paper-dropdown-menu label="File format">
+        <paper-listbox slot="dropdown-content">
+          ${Object.values(FileFormat).map((format) => html `<paper-item>${format}</paper-item>`)}
+        </paper-listbox>
+      </paper-dropdown-menu>
+    `;
     }
 };
 FileFormatSelector.styles = css `
-        :host {
-            height: 100%;
-            overflow: auto;
-        }
+    :host {
+      height: 100%;
+      overflow: auto;
+    }
 
-        .row {
-            display: flex;
-            flex-direction: row;
-            justify-content: end;
-        }
-    `;
+    .row {
+      display: flex;
+      flex-direction: row;
+      justify-content: end;
+    }
+  `;
 __decorate([
     property({ type: String })
 ], FileFormatSelector.prototype, "fileFormat", void 0);
@@ -65,17 +64,15 @@ let FileFormatDownloadButton = class FileFormatDownloadButton extends LitElement
         this.fileFormat = FileFormat.CSV;
     }
     render() {
-        return html `
-            <paper-menu-button>
-                <paper-button slot="dropdown-trigger">
-                    Download Now
-                    <iron-icon icon="icons:arrow-drop-down"></iron-icon>
-                </paper-button>
-                <paper-listbox slot="dropdown-content">
-                    ${Object.values(FileFormat)
-            .map((format) => html `<paper-item>${format}</paper-item>`)}
-                </paper-listbox>
-            </paper-menu-button>`;
+        return html ` <paper-menu-button>
+      <paper-button slot="dropdown-trigger">
+        Download Now
+        <iron-icon icon="icons:arrow-drop-down"></iron-icon>
+      </paper-button>
+      <paper-listbox slot="dropdown-content">
+        ${Object.values(FileFormat).map((format) => html `<paper-item>${format}</paper-item>`)}
+      </paper-listbox>
+    </paper-menu-button>`;
     }
 };
 FileFormatDownloadButton.styles = css ``;

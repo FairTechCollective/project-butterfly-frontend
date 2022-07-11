@@ -26,7 +26,6 @@ To watch files and rebuild when the files are modified, run the following comman
 npm run build:watch
 ```
 
-
 To build the static site to `docs/` for Github Pages, run:
 
 ```bash

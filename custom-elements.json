@@ -10,7 +10,123 @@
           "kind": "class",
           "description": "",
           "name": "App",
-          "members": [],
+          "members": [
+            {
+              "kind": "field",
+              "name": "notify",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "notify"
+            },
+            {
+              "kind": "field",
+              "name": "opened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "opened"
+            },
+            {
+              "kind": "field",
+              "name": "downloadData",
+              "type": {
+                "text": "DataSource[]"
+              },
+              "default": "[]",
+              "attribute": "downloadData"
+            },
+            {
+              "kind": "field",
+              "name": "selectedTab",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "attribute": "selectedTab"
+            },
+            {
+              "kind": "field",
+              "name": "page",
+              "attribute": "page"
+            },
+            {
+              "kind": "field",
+              "name": "dataSource",
+              "type": {
+                "text": "DataSource | null"
+              },
+              "default": "null",
+              "attribute": "dataSource"
+            },
+            {
+              "kind": "field",
+              "name": "viewTabs",
+              "type": {
+                "text": "PaperTabsElement"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "renderPage"
+            },
+            {
+              "kind": "method",
+              "name": "renderHomePage"
+            },
+            {
+              "kind": "method",
+              "name": "renderRefineryPage"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "notify",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "notify"
+            },
+            {
+              "name": "opened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "opened"
+            },
+            {
+              "name": "downloadData",
+              "type": {
+                "text": "DataSource[]"
+              },
+              "default": "[]",
+              "fieldName": "downloadData"
+            },
+            {
+              "name": "selectedTab",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "fieldName": "selectedTab"
+            },
+            {
+              "name": "page",
+              "fieldName": "page"
+            },
+            {
+              "name": "dataSource",
+              "type": {
+                "text": "DataSource | null"
+              },
+              "default": "null",
+              "fieldName": "dataSource"
+            }
+          ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
@@ -40,6 +156,234 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/butterfly-table.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "Table",
+          "members": [
+            {
+              "kind": "field",
+              "name": "tableData",
+              "type": {
+                "text": "TableData[]"
+              },
+              "default": "[]",
+              "attribute": "tableData"
+            },
+            {
+              "kind": "field",
+              "name": "sortableHeaders",
+              "type": {
+                "text": "Set<string>"
+              },
+              "default": "new Set([])",
+              "attribute": "sortableHeaders"
+            },
+            {
+              "kind": "field",
+              "name": "expandable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "expandable"
+            },
+            {
+              "kind": "field",
+              "name": "expandData",
+              "type": {
+                "text": "TableData[]"
+              },
+              "default": "[]",
+              "attribute": "expandData"
+            },
+            {
+              "kind": "field",
+              "name": "expandRows",
+              "type": {
+                "text": "Set<number>"
+              },
+              "default": "new Set([])",
+              "attribute": "expandRows"
+            },
+            {
+              "kind": "field",
+              "name": "hideRows",
+              "type": {
+                "text": "Set<number>"
+              },
+              "default": "new Set([])",
+              "attribute": "hideRows"
+            },
+            {
+              "kind": "field",
+              "name": "highlightRows",
+              "type": {
+                "text": "Set<number>"
+              },
+              "default": "new Set([])",
+              "attribute": "highlightRows"
+            },
+            {
+              "kind": "method",
+              "name": "renderExpandedRow",
+              "parameters": [
+                {
+                  "name": "i",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "tableData",
+              "type": {
+                "text": "TableData[]"
+              },
+              "default": "[]",
+              "fieldName": "tableData"
+            },
+            {
+              "name": "sortableHeaders",
+              "type": {
+                "text": "Set<string>"
+              },
+              "default": "new Set([])",
+              "fieldName": "sortableHeaders"
+            },
+            {
+              "name": "expandable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "expandable"
+            },
+            {
+              "name": "expandData",
+              "type": {
+                "text": "TableData[]"
+              },
+              "default": "[]",
+              "fieldName": "expandData"
+            },
+            {
+              "name": "expandRows",
+              "type": {
+                "text": "Set<number>"
+              },
+              "default": "new Set([])",
+              "fieldName": "expandRows"
+            },
+            {
+              "name": "hideRows",
+              "type": {
+                "text": "Set<number>"
+              },
+              "default": "new Set([])",
+              "fieldName": "hideRows"
+            },
+            {
+              "name": "highlightRows",
+              "type": {
+                "text": "Set<number>"
+              },
+              "default": "new Set([])",
+              "fieldName": "highlightRows"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "butterfly-table",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Table",
+          "declaration": {
+            "name": "Table",
+            "module": "src/butterfly-table.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "butterfly-table",
+          "declaration": {
+            "name": "Table",
+            "module": "src/butterfly-table.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/data-connectors.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "BenzeneReport",
+          "members": [
+            {
+              "kind": "field",
+              "name": "urlBase",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "private",
+              "default": "'https://fenceline-ambient-benzene-apims.azure-api.net/fenceline-ambient-benzene/'"
+            },
+            {
+              "kind": "field",
+              "name": "facilities",
+              "type": {
+                "text": "BenzeneReportFacility[]"
+              },
+              "privacy": "private",
+              "default": "[]"
+            },
+            {
+              "kind": "method",
+              "name": "initializeFacilities"
+            },
+            {
+              "kind": "method",
+              "name": "getDataSources",
+              "return": {
+                "type": {
+                  "text": "Promise<DataSource[]>"
+                }
+              }
+            }
+          ],
+          "superclass": {
+            "name": "DataConnector",
+            "module": "src/data-connectors.ts"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "BenzeneReport",
+          "declaration": {
+            "name": "BenzeneReport",
+            "module": "src/data-connectors.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/data-source-list.ts",
       "declarations": [
         {
@@ -49,77 +393,35 @@
           "members": [
             {
               "kind": "field",
-              "name": "dataSources",
-              "default": "[\n    {\n        title: 'The Benzene Report',\n        description: 'Refineries reporting of two-week average benzene levels to the EPA every three months.',\n        tags: new Set(['benzene', 'valero', 'valero-benicia', 'marathon-martinez', 'martinez', 'benicia']),\n        startTime: new Date(0),\n        endTime: new Date(0),\n        filters: deepCopy<FilterSource[]>(FILTERS),\n    },\n    {\n        title: \"Valero Benicia\",\n        description: \"Valero Refinery self reporting, real-time data\",\n        tags: new Set(['benzene', 'xylene', 'valero', 'valero-benicia', 'benicia']),\n        startTime: new Date(0),\n        endTime: new Date(0),\n        filters: deepCopy<FilterSource[]>(FILTERS),\n    },\n    {\n        title: \"Marathon Martinez\",\n        description: \"Marathon Martinez Refinery self reporting, real-time data\",\n        tags: new Set(['benzene', 'carbon-monoxide', 'martinez', 'marathon-martinez']),\n        startTime: new Date(0),\n        endTime: new Date(0),\n        filters: deepCopy<FilterSource[]>(FILTERS),\n    },\n]",
-              "attribute": "dataSources",
-              "type": {
-                "text": "array"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "filterTags",
-              "default": "new Set<string>()",
-              "attribute": "filterTags"
-            },
-            {
-              "kind": "field",
-              "name": "disableTags",
-              "default": "new Set<string>()",
-              "attribute": "disableTags"
-            },
-            {
-              "kind": "field",
-              "name": "expanded",
+              "name": "loaded",
               "type": {
                 "text": "boolean"
               },
-              "default": "false",
-              "attribute": "expanded"
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "dataSources",
+              "type": {
+                "text": "DataSource[]"
+              },
+              "default": "[]",
+              "attribute": "dataSources"
             },
             {
               "kind": "method",
-              "name": "renderDataSources"
-            },
-            {
-              "kind": "method",
-              "name": "handleTagsChanged",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent<Set<string>>"
-                  }
-                }
-              ]
+              "name": "loadDataSources"
             }
           ],
           "attributes": [
             {
               "name": "dataSources",
-              "default": "DATA_SOURCES",
-              "resolveInitializer": {
-                "module": "src/data-source-list.ts"
-              },
-              "fieldName": "dataSources"
-            },
-            {
-              "name": "filterTags",
-              "default": "new Set<string>()",
-              "fieldName": "filterTags"
-            },
-            {
-              "name": "disableTags",
-              "default": "new Set<string>()",
-              "fieldName": "disableTags"
-            },
-            {
-              "name": "expanded",
               "type": {
-                "text": "boolean"
+                "text": "DataSource[]"
               },
-              "default": "false",
-              "fieldName": "expanded"
+              "default": "[]",
+              "fieldName": "dataSources"
             }
           ],
           "superclass": {
@@ -164,41 +466,17 @@
               "type": {
                 "text": "DataSource"
               },
-              "default": "{\n        title: \"\",\n        description: \"\",\n        tags: new Set<string>([]),\n        startTime: new Date(0),\n        endTime: new Date(0),\n        filters: [],\n    }",
+              "default": "{\n    name: '',\n    tags: new Set<string>([]),\n    startTime: new Date(0),\n    endTime: new Date(0),\n    address: '',\n    city: '',\n    state: '',\n    company: '',\n    twoWeekPollutants: [],\n    continuousPollutants: [],\n    ranking: 0,\n    benzeneConcentration: 0,\n    benzeneWeeksExceeding: 0,\n  }",
               "attribute": "data"
             },
             {
               "kind": "field",
-              "name": "expand",
+              "name": "asPopup",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "attribute": "expand"
-            },
-            {
-              "kind": "field",
-              "name": "hide",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "hide"
-            },
-            {
-              "kind": "field",
-              "name": "showTags",
-              "default": "new Set<string>([])",
-              "attribute": "showTags"
-            },
-            {
-              "kind": "field",
-              "name": "forExport",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "forExport"
+              "attribute": "asPopup"
             },
             {
               "kind": "field",
@@ -214,39 +492,28 @@
             },
             {
               "kind": "method",
-              "name": "renderSummary"
+              "name": "renderPopup",
+              "privacy": "private"
             },
             {
               "kind": "method",
-              "name": "renderFilterSummary",
-              "parameters": [
-                {
-                  "name": "showChecked",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
+              "name": "renderDescription",
+              "privacy": "private"
             },
             {
               "kind": "method",
               "name": "renderTimeSummary",
-              "parameters": [
-                {
-                  "name": "showSelectedTime",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
+              "privacy": "private"
             },
             {
               "kind": "method",
-              "name": "renderSummaryButtons"
+              "name": "renderRefineryPage",
+              "privacy": "private"
             },
             {
               "kind": "method",
-              "name": "renderModal"
+              "name": "requestQueue",
+              "privacy": "private"
             }
           ],
           "events": [
@@ -262,37 +529,16 @@
               "type": {
                 "text": "DataSource"
               },
-              "default": "{\n        title: \"\",\n        description: \"\",\n        tags: new Set<string>([]),\n        startTime: new Date(0),\n        endTime: new Date(0),\n        filters: [],\n    }",
+              "default": "{\n    name: '',\n    tags: new Set<string>([]),\n    startTime: new Date(0),\n    endTime: new Date(0),\n    address: '',\n    city: '',\n    state: '',\n    company: '',\n    twoWeekPollutants: [],\n    continuousPollutants: [],\n    ranking: 0,\n    benzeneConcentration: 0,\n    benzeneWeeksExceeding: 0,\n  }",
               "fieldName": "data"
             },
             {
-              "name": "expand",
+              "name": "asPopup",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "fieldName": "expand"
-            },
-            {
-              "name": "hide",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "hide"
-            },
-            {
-              "name": "showTags",
-              "default": "new Set<string>([])",
-              "fieldName": "showTags"
-            },
-            {
-              "name": "forExport",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "forExport"
+              "fieldName": "asPopup"
             },
             {
               "name": "selectedStartTime",
@@ -334,6 +580,183 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/download-queue.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "DownloadQueue",
+          "members": [
+            {
+              "kind": "field",
+              "name": "downloadData",
+              "type": {
+                "text": "DataSource[]"
+              },
+              "default": "[]",
+              "attribute": "downloadData"
+            },
+            {
+              "kind": "field",
+              "name": "fileFormatSelector",
+              "type": {
+                "text": "FileFormatSelector"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "renderDownloads",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "downloadData",
+              "type": {
+                "text": "DataSource[]"
+              },
+              "default": "[]",
+              "fieldName": "downloadData"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "download-queue",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DownloadQueue",
+          "declaration": {
+            "name": "DownloadQueue",
+            "module": "src/download-queue.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "download-queue",
+          "declaration": {
+            "name": "DownloadQueue",
+            "module": "src/download-queue.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/file-format-selector.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "FileFormatSelector",
+          "members": [
+            {
+              "kind": "field",
+              "name": "fileFormat",
+              "attribute": "fileFormat"
+            },
+            {
+              "kind": "field",
+              "name": "fileFormatDropdown",
+              "type": {
+                "text": "PaperDropdownMenuElement"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "fileFormat",
+              "fieldName": "fileFormat"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "file-format-selector",
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "FileFormatDownloadButton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "fileFormat",
+              "attribute": "fileFormat"
+            },
+            {
+              "kind": "field",
+              "name": "fileFormatDropdown",
+              "type": {
+                "text": "PaperDropdownMenuElement"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "fileFormat",
+              "fieldName": "fileFormat"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "file-format-download",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "FileFormatSelector",
+          "declaration": {
+            "name": "FileFormatSelector",
+            "module": "src/file-format-selector.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "file-format-selector",
+          "declaration": {
+            "name": "FileFormatSelector",
+            "module": "src/file-format-selector.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "FileFormatDownloadButton",
+          "declaration": {
+            "name": "FileFormatDownloadButton",
+            "module": "src/file-format-selector.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "file-format-download",
+          "declaration": {
+            "name": "FileFormatDownloadButton",
+            "module": "src/file-format-selector.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/filter-list.ts",
       "declarations": [
         {
@@ -345,7 +768,7 @@
               "kind": "field",
               "name": "timer",
               "type": {
-                "text": "number|null"
+                "text": "number | null"
               },
               "privacy": "private",
               "default": "null"
@@ -438,7 +861,7 @@
               "type": {
                 "text": "string"
               },
-              "default": "\"\"",
+              "default": "''",
               "attribute": "header"
             },
             {
@@ -461,7 +884,7 @@
               "name": "renderFilters",
               "return": {
                 "type": {
-                  "text": "TemplateResult| typeof nothing"
+                  "text": "TemplateResult | typeof nothing"
                 }
               },
               "parameters": [
@@ -503,7 +926,7 @@
               "type": {
                 "text": "string"
               },
-              "default": "\"\"",
+              "default": "''",
               "fieldName": "header"
             },
             {
@@ -549,122 +972,124 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/my-element.ts",
+      "path": "src/map-view.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "An example element.",
-          "name": "MyElement",
-          "cssParts": [
-            {
-              "description": "The button",
-              "name": "button"
-            }
-          ],
-          "slots": [
-            {
-              "description": "This element has a slot",
-              "name": ""
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "'World'",
-              "description": "The name to say \"Hello\" to.",
-              "attribute": "name"
-            },
-            {
-              "kind": "field",
-              "name": "count",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "The number of times the button has been clicked.",
-              "attribute": "count"
-            },
-            {
-              "kind": "method",
-              "name": "_onClick",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "sayHello",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "name",
-                  "type": {
-                    "text": "string"
-                  },
-                  "description": "The name to say \"Hello\" to"
-                }
-              ],
-              "description": "Formats a greeting"
-            }
-          ],
-          "events": [
-            {
-              "name": "count-changed",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Indicates when the count changes"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "'World'",
-              "description": "The name to say \"Hello\" to.",
-              "fieldName": "name"
-            },
-            {
-              "name": "count",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "The number of times the button has been clicked.",
-              "fieldName": "count"
-            }
-          ],
+          "description": "",
+          "name": "MapView",
+          "members": [],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "my-element",
+          "tagName": "map-view",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "MyElement",
+          "name": "MapView",
           "declaration": {
-            "name": "MyElement",
-            "module": "src/my-element.ts"
+            "name": "MapView",
+            "module": "src/map-view.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "my-element",
+          "name": "map-view",
           "declaration": {
-            "name": "MyElement",
-            "module": "src/my-element.ts"
+            "name": "MapView",
+            "module": "src/map-view.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/time-selector.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "TimeSelector",
+          "members": [
+            {
+              "kind": "field",
+              "name": "startTime",
+              "default": "new Date()",
+              "attribute": "startTime"
+            },
+            {
+              "kind": "field",
+              "name": "endTime",
+              "default": "new Date()",
+              "attribute": "endTime"
+            },
+            {
+              "kind": "field",
+              "name": "startDateElement",
+              "type": {
+                "text": "HTMLInputElement"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "endDateElement",
+              "type": {
+                "text": "HTMLInputElement"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "dispatchTimeEvent",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "name": "set-time",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "startTime",
+              "default": "new Date()",
+              "fieldName": "startTime"
+            },
+            {
+              "name": "endTime",
+              "default": "new Date()",
+              "fieldName": "endTime"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "time-selector",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TimeSelector",
+          "declaration": {
+            "name": "TimeSelector",
+            "module": "src/time-selector.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "time-selector",
+          "declaration": {
+            "name": "TimeSelector",
+            "module": "src/time-selector.ts"
           }
         }
       ]
@@ -696,12 +1121,6 @@
           }
         }
       ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/test/my-element_test.ts",
-      "declarations": [],
-      "exports": []
     }
   ]
 }

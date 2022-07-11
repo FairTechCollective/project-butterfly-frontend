@@ -7,7 +7,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { LitElement, html, css } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 function makeInputDate(d) {
-    return d.getFullYear().toString().padStart(4, '0') + '-' + (d.getMonth() + 1).toString().padStart(2, '0') + '-' + d.getDate().toString().padStart(2, '0');
+    return (d.getFullYear().toString().padStart(4, '0') +
+        '-' +
+        (d.getMonth() + 1).toString().padStart(2, '0') +
+        '-' +
+        d.getDate().toString().padStart(2, '0'));
 }
 let TimeSelector = class TimeSelector extends LitElement {
     constructor() {
@@ -47,7 +51,7 @@ let TimeSelector = class TimeSelector extends LitElement {
             detail: [
                 new Date(this.startDateElement.value),
                 new Date(this.endDateElement.value),
-            ]
+            ],
         }));
     }
 };

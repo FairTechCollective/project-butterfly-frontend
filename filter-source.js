@@ -14,21 +14,22 @@ export var FilterEvent;
 let FilterSourceElement = class FilterSourceElement extends LitElement {
     constructor() {
         super(...arguments);
-        this.header = "";
+        this.header = '';
         this.filters = [];
         this.disableTags = new Set();
     }
     render() {
         return html `
-            <h4>${this.header}</h4>
-            ${this.renderFilters(this.filters)}
-        `;
+      <h4>${this.header}</h4>
+      ${this.renderFilters(this.filters)}
+    `;
     }
     renderFilters(filters, level = 0) {
         if (!filters.length) {
             return nothing;
         }
-        const filterList = filters.map((filter) => {
+        const filterList = filters
+            .map((filter) => {
             if (filter.options.length) {
                 return html `
                         <paper-checkbox
@@ -41,22 +42,23 @@ let FilterSourceElement = class FilterSourceElement extends LitElement {
                     </details>`;
             }
             else {
-                return html `
-                    <paper-checkbox
-                        ?disabled="${this.disableTags.has(filter.tag)}"
-                        ?checked="${filter.checked}"
-                        @checked-changed="${this.updateFilter(filter)}">
-                        ${filter.label}
-                    </paper-checkbox>`;
+                return html ` <paper-checkbox
+            ?disabled="${this.disableTags.has(filter.tag)}"
+            ?checked="${filter.checked}"
+            @checked-changed="${this.updateFilter(filter)}"
+          >
+            ${filter.label}
+          </paper-checkbox>`;
             }
-        }).map((filter) => html `<li>${filter}</li>`);
+        })
+            .map((filter) => html `<li>${filter}</li>`);
         return html `<ul>
-            ${filterList}
-        </ul>`;
+      ${filterList}
+    </ul>`;
     }
     updateFilter(filter) {
         return (e) => {
-            filter.checked = !!(e.target.checked);
+            filter.checked = !!e.target.checked;
             if (filter.options && filter.options.length) {
                 for (const option of filter.options) {
                     option.checked = filter.checked;
@@ -68,20 +70,19 @@ let FilterSourceElement = class FilterSourceElement extends LitElement {
     }
 };
 FilterSourceElement.styles = css `
+    h4 {
+      margin-left: 5px;
+    }
 
-        h4 {
-            margin-left: 5px;
-        }
+    ul {
+      padding-inline-start: 25px;
+    }
 
-        ul {
-            padding-inline-start: 25px;
-        }
-
-        li {
-            list-style: none;
-            margin: 10px 0;
-        }
-    `;
+    li {
+      list-style: none;
+      margin: 10px 0;
+    }
+  `;
 __decorate([
     property({ type: String })
 ], FilterSourceElement.prototype, "header", void 0);

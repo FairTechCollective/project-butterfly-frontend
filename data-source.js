@@ -74,14 +74,14 @@ let DataSourceElement = class DataSourceElement extends LitElement {
     constructor() {
         super(...arguments);
         this.data = {
-            name: "",
+            name: '',
             tags: new Set([]),
             startTime: new Date(0),
             endTime: new Date(0),
-            address: "",
-            city: "",
-            state: "",
-            company: "",
+            address: '',
+            city: '',
+            state: '',
+            company: '',
             twoWeekPollutants: [],
             continuousPollutants: [],
             ranking: 0,
@@ -105,16 +105,10 @@ let DataSourceElement = class DataSourceElement extends LitElement {
         }
     }
     renderPopup() {
-        return html `
-            <article>
-                ${this.renderDescription()}
-            </article>
-        `;
+        return html ` <article>${this.renderDescription()}</article> `;
     }
     renderDescription() {
-        return html `
-            <h3>${this.data.name}</h3>
-        `;
+        return html ` <h3>${this.data.name}</h3> `;
     }
     renderTimeSummary() {
         function summarizeDate(d) {
@@ -132,52 +126,51 @@ let DataSourceElement = class DataSourceElement extends LitElement {
                 'September',
                 'October',
                 'November',
-                'December'
+                'December',
             ];
             const monthIndex = d.getMonth();
             const monthName = months[monthIndex];
             return `${monthName} ${date}, ${year}`;
         }
-        let startTime = this.data.startTime;
-        let endTime = this.data.endTime;
+        const startTime = this.data.startTime;
+        const endTime = this.data.endTime;
         return html `<section>
-            <p>
-                <span>Time Range:</span>
-                ${summarizeDate(startTime)} to ${summarizeDate(endTime)}
-            </p>
-        </section>`;
+      <p>
+        <span>Time Range:</span>
+        ${summarizeDate(startTime)} to ${summarizeDate(endTime)}
+      </p>
+    </section>`;
     }
     renderRefineryPage() {
-        return html `
-            <article>
-                <div class="row button-container">
-                    <div class="row close-container">
-                        <paper-icon-button
-                            icon="icons:close"
-                            @click="${() => {
+        return html ` <article>
+      <div class="row button-container">
+        <div class="row close-container">
+          <paper-icon-button
+            icon="icons:close"
+            @click="${() => {
             this.dispatchEvent(new CustomEvent(DataSourceEvent.REQUEST_CLOSE));
-        }}">
-                        </paper-icon-button>
-                        <h3>${this.data.name}</h3>
-                    </div>
-                    <div class="row">
-                        <paper-button
-                            @click="${this.requestQueue}">
-                            Add to Queue
-                        </paper-button>
-                        <file-format-download></file-format-download>
-                    </div>
-                </div>
-                ${this.renderTimeSummary()}
-                <time-selector
-                  .startTime="${this.data.startTime}"
-                  .endTime="${this.data.endTime}"
-                  @set-time=${(e) => {
+        }}"
+          >
+          </paper-icon-button>
+          <h3>${this.data.name}</h3>
+        </div>
+        <div class="row">
+          <paper-button @click="${this.requestQueue}">
+            Add to Queue
+          </paper-button>
+          <file-format-download></file-format-download>
+        </div>
+      </div>
+      ${this.renderTimeSummary()}
+      <time-selector
+        .startTime="${this.data.startTime}"
+        .endTime="${this.data.endTime}"
+        @set-time=${(e) => {
             this.selectedStartTime = e.detail[0];
             this.selectedEndTime = e.detail[1];
         }}
-                ></time-selector>
-            </article>`;
+      ></time-selector>
+    </article>`;
     }
     requestQueue() {
         const data = deepCopy(this.data);
@@ -186,54 +179,54 @@ let DataSourceElement = class DataSourceElement extends LitElement {
         this.dispatchEvent(new CustomEvent(DataSourceEvent.REQUEST_DOWNLOAD, {
             detail: data,
             bubbles: true,
-            composed: true
+            composed: true,
         }));
     }
 };
 DataSourceElement.styles = css `
-        article {
-            background-color: #e6e4e4;
-            border-radius: 8px;
-            margin: 15px;
-            padding: 30px;
-        }
+    article {
+      background-color: #e6e4e4;
+      border-radius: 8px;
+      margin: 15px;
+      padding: 30px;
+    }
 
-        h3 {
-            margin: 0;
-        }
+    h3 {
+      margin: 0;
+    }
 
-        span.title {
-            font-weight: bold;
-        }
+    span.title {
+      font-weight: bold;
+    }
 
-        .row {
-            align-items: center;
-            display: flex;
-            justify-content: space-between;
-        }
+    .row {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+    }
 
-        section > p > span {
-            font-weight: bold;
-        }
+    section > p > span {
+      font-weight: bold;
+    }
 
-        .tag {
-            background-color: springgreen;
-            color: white;
-            display: inline-block;
-            margin: 2px;
-            padding: 5px;
-            text-decoration: none;
-            border-radius: 8px;
-        }
+    .tag {
+      background-color: springgreen;
+      color: white;
+      display: inline-block;
+      margin: 2px;
+      padding: 5px;
+      text-decoration: none;
+      border-radius: 8px;
+    }
 
-        .button-container {
-            margin-top: -20px;
-        }
+    .button-container {
+      margin-top: -20px;
+    }
 
-        .close-container {
-            margin-left: -20px;
-        }
-    `;
+    .close-container {
+      margin-left: -20px;
+    }
+  `;
 __decorate([
     property({ type: Object })
 ], DataSourceElement.prototype, "data", void 0);

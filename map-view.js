@@ -17,19 +17,26 @@ let MapView = class MapView extends LitElement {
         const width = bbox.width;
         const height = bbox.height;
         let projection = d3.geoMercator();
-        Promise.all([d3.json('geojson/united_states.geojson'), d3.json('geojson/refineries.geojson')]).then((bbs) => {
+        Promise.all([
+            d3.json('geojson/united_states.geojson'),
+            d3.json('geojson/refineries.geojson'),
+        ]).then((bbs) => {
             document.getElementById('map-container').style.visibility = 'visible';
             const usBB = bbs[0];
             const refineriesBB = bbs[1];
             projection.fitSize([width, height], refineriesBB);
             let geoGenerator = d3.geoPath().projection(projection);
-            d3.select('#map').append('g').selectAll('path')
+            d3.select('#map')
+                .append('g')
+                .selectAll('path')
                 .data(usBB.features)
                 .join('path')
                 .attr('d', geoGenerator)
                 .attr('fill', 'white')
                 .attr('stroke', '#eee');
-            d3.select('#map').append('g').selectAll('path')
+            d3.select('#map')
+                .append('g')
+                .selectAll('path')
                 .data(refineriesBB.features)
                 .join('path')
                 .attr('d', geoGenerator.pointRadius(() => 1))
@@ -37,16 +44,14 @@ let MapView = class MapView extends LitElement {
         });
     }
     render() {
-        return html `
-            <slot name="map"></slot>
-        `;
+        return html ` <slot name="map"></slot> `;
     }
 };
 MapView.styles = css `
-        slot {
-            height: 480px;
-        }
-    `;
+    slot {
+      height: 480px;
+    }
+  `;
 MapView = __decorate([
     customElement('map-view')
 ], MapView);

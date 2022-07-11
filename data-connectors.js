@@ -1,6 +1,7 @@
 import { TwoWeekPollutants } from './data-source';
 function convertToTag(name) {
-    return name.trim()
+    return name
+        .trim()
         .toLowerCase()
         .replaceAll(/[^\w]/g, '')
         .replaceAll(/\s+/g, ' ')
@@ -28,8 +29,7 @@ export class BenzeneReport extends DataConnector {
         this.facilities = [];
     }
     initializeFacilities() {
-        return makeRequest('GET', this.urlBase + 'facilities')
-            .then((response) => {
+        return makeRequest('GET', this.urlBase + 'facilities').then((response) => {
             const facilities = JSON.parse(response);
             this.facilities.push(...facilities);
         });

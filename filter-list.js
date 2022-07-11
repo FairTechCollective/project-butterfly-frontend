@@ -21,14 +21,14 @@ let FilterListElement = class FilterListElement extends LitElement {
     }
     render() {
         return this.filters.map((filter) => html `
-            <filter-source
-                .header="${filter.header}"
-                .disableTags="${this.disableTags}"
-                .filters="${filter.filters}"
-                @checked-changed="${this.handleCheckedChanged}"
-            >
-            </filter-source>
-        `);
+        <filter-source
+          .header="${filter.header}"
+          .disableTags="${this.disableTags}"
+          .filters="${filter.filters}"
+          @checked-changed="${this.handleCheckedChanged}"
+        >
+        </filter-source>
+      `);
     }
     handleCheckedChanged() {
         if (this.timer != null) {

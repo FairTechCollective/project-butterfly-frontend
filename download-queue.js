@@ -38,47 +38,43 @@ let DownloadQueue = class DownloadQueue extends LitElement {
         if (!this.downloadData.length) {
             return html `<h3>No data sources selected.</h3>`;
         }
-        return this.downloadData.map((data) => html `
-            <div class="row">
-                <data-source
-                    .data="${data}"
-                    .forExport="${true}">
-                </data-source>
-                <div class="delete-container">
-                    <paper-icon-button
-                        icon="icons:delete"
-                        @click="${() => {
+        return this.downloadData.map((data) => html ` <div class="row">
+          <data-source .data="${data}" .forExport="${true}"> </data-source>
+          <div class="delete-container">
+            <paper-icon-button
+              icon="icons:delete"
+              @click="${() => {
             this.dispatchEvent(new CustomEvent(DownloadQueueEvents.REQUEST_DELETE, { detail: data }));
         }}"
-                    >
-                    </paper-icon-button>
-                </div>
-            </div>`);
+            >
+            </paper-icon-button>
+          </div>
+        </div>`);
     }
 };
 DownloadQueue.styles = css `
-        :host {
-            height: 100%;
-            overflow: auto;
-        }
+    :host {
+      height: 100%;
+      overflow: auto;
+    }
 
-        h3 {
-            color: gray;
-            font-weight: 100;
-            padding: 20px;
-        }
+    h3 {
+      color: gray;
+      font-weight: 100;
+      padding: 20px;
+    }
 
-        .row {
-            display: flex;
-            flex-direction: row;
-            justify-content: end;
-            align-items: center;
-        }
+    .row {
+      display: flex;
+      flex-direction: row;
+      justify-content: end;
+      align-items: center;
+    }
 
-        .delete-container {
-            padding-right: 14px;
-        }
-    `;
+    .delete-container {
+      padding-right: 14px;
+    }
+  `;
 __decorate([
     property({ type: Array })
 ], DownloadQueue.prototype, "downloadData", void 0);
