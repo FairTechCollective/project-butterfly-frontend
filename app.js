@@ -57,10 +57,10 @@ let App = class App extends LitElement {
           <app-header slot="header" reveals effects="waterfall">
             <app-toolbar>
               <h1 main-title>Refinery Air Watch</h1>
-              <a href="/">Map</a>
-              <a href="/rankings">Rankings</a>
-              <a href="/about">About</a>
-              <a href="/list">My List</a>
+              <a href="./">Map</a>
+              <a href="./rankings">Rankings</a>
+              <a href="./about">About</a>
+              <a href="./list">My List</a>
             </app-toolbar>
           </app-header>
           ${this.renderPage()}
@@ -69,10 +69,10 @@ let App = class App extends LitElement {
       <footer>
         <div>
           <div class="menu">
-            <a href="/">Map</a>
-            <a href="/rankings">Rankings</a>
-            <a href="/about">About</a>
-            <a href="/list">My List</a>
+            <a href="./">Map</a>
+            <a href="./rankings">Rankings</a>
+            <a href="./about">About</a>
+            <a href="./list">My List</a>
           </div>
           <h1>Refinery Air Watch</h1>
         </div>
