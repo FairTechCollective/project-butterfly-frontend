@@ -7,9 +7,11 @@
   "module": "app.js",
   "type": "module",
   "scripts": {
+    "prebuild": "cp index.html dest/index.html; cp -r geojson dest/geojson",
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "build:static": "npm run build && rollup --config",
+    "prebuild:static": "npm run build",
+    "build:static": "rollup --config",
     "clean": "rimraf app.{d.ts,d.ts.map,js,js.map} test/app.{d.ts,d.ts.map,js,js.map} test/app_test.{d.ts,d.ts.map,js,js.map}",
     "lint": "npm run lint:lit-analyzer && npm run lint:eslint",
     "lint:eslint": "eslint 'src/**/*.ts'",
@@ -17,7 +19,8 @@
     "format": "prettier \"**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write",
     "analyze": "cem analyze --litelement --globs \"src/**/*.ts\"",
     "analyze:watch": "cem analyze --litelement --globs \"src/**/*.ts\" --watch",
-    "serve": "wds --watch",
+    "preserve": "npm run build",
+    "serve": "wds --node-resolve --root-dir dest --watch",
     "serve:prod": "MODE=prod npm run serve",
     "checksize": "rollup -c ; cat app.bundled.js | gzip -9 | wc -c ; rm app.bundled.js"
   },

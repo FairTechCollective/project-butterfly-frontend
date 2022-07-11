@@ -3,9 +3,7 @@ import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 
-import './filter-list';
 import './file-format-selector';
-import './data-connectors';
 import './time-selector';
 
 import {LitElement, html, css} from 'lit';
