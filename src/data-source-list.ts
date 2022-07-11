@@ -1,212 +1,91 @@
-import './filter-list';
+import '@polymer/paper-icon-button/paper-icon-button.js';
+import '@polymer/paper-input/paper-input.js';
 import './data-source';
+import './butterfly-table';
 
 import {LitElement, html, css, nothing} from 'lit';
 import {customElement, property, state} from 'lit/decorators.js';
-import {styleMap} from 'lit/directives/style-map.js'
 import {until} from 'lit/directives/until.js'
 import {guard} from 'lit/directives/guard.js'
 
-import {Filter, FilterSource} from './filter-source';
 import {BenzeneReport} from './data-connectors';
-import {DataSource, DataSourceElement} from './data-source';
-
-const DATA_SOURCES = [
-    {
-        title: "Valero Benicia",
-        description: "Valero Refinery self reporting, real-time data",
-        tags: new Set(['benzene', 'xylene', 'valero', 'valero-benicia', 'benicia']),
-        startTime: new Date(0),
-        endTime: new Date(0),
-        filters: [
-            {
-                header: 'Locations',
-                filters: [{
-                    label: 'Bay Area',
-                    tag: 'bay-area',
-                    checked: false,
-                    options: [
-                        {
-                            label: 'Cities',
-                            tag: 'cities',
-                            checked: false,
-                            options: [
-                                {
-                                    label: 'Benicia',
-                                    tag: 'benicia',
-                                    options: [],
-                                    checked: false,
-                                },
-                            ],
-                        },
-                        {
-                            label: 'Refineries',
-                            tag: 'refineries',
-                            checked: false,
-                            options: [
-                                {
-                                    label: 'Valero Benicia',
-                                    tag: 'valero-benicia',
-                                    options: [],
-                                    checked: false,
-                                },
-                            ],
-                        }
-                    ],
-                }],
-            },
-            {
-                header: 'Chemicals',
-                filters: [
-                    {
-                        label: 'Benzene',
-                        tag: 'benzene',
-                        checked: false,
-                        options: [] as Filter[],
-                    },
-                    {
-                        label: 'Xylene',
-                        tag: 'xylene',
-                        checked: false,
-                        options: [] as Filter[],
-                    },
-                    {
-                        label: 'Carbon Monoxide',
-                        tag: 'carbon-monoxide',
-                        checked: false,
-                        options: [] as Filter[],
-                    },
-            ]},
-        ],
-    },
-    {
-        title: "Tesoro Martinez",
-        description: "Tesoro Martinez Refinery self reporting, real-time data",
-        tags: new Set(['benzene', 'carbon-monoxide', 'martinez', 'tesoro-martinez']),
-        startTime: new Date(0),
-        endTime: new Date(0),
-        filters: [
-            {
-                header: 'Locations',
-                filters: [{
-                    label: 'Bay Area',
-                    tag: 'bay-area',
-                    checked: false,
-                    options: [
-                        {
-                            label: 'Cities',
-                            tag: 'cities',
-                            checked: false,
-                            options: [
-                                {
-                                    label: 'Martinez',
-                                    tag: 'martinez',
-                                    options: [],
-                                    checked: false,
-                                },
-                            ],
-                        },
-                        {
-                            label: 'Refineries',
-                            tag: 'refineries',
-                            checked: false,
-                            options: [
-                                {
-                                    label: 'Tesoro Martinez',
-                                    tag: 'tesoro-martinez',
-                                    options: [],
-                                    checked: false,
-                                },
-                            ],
-                        }
-                    ],
-                }],
-            },
-            {
-                header: 'Chemicals',
-                filters: [
-                    {
-                        label: 'Benzene',
-                        tag: 'benzene',
-                        checked: false,
-                        options: [] as Filter[],
-                    },
-                    {
-                        label: 'Xylene',
-                        tag: 'xylene',
-                        checked: false,
-                        options: [] as Filter[],
-                    },
-                    {
-                        label: 'Carbon Monoxide',
-                        tag: 'carbon-monoxide',
-                        checked: false,
-                        options: [] as Filter[],
-                    },
-            ]},
-        ],
-    },
-]
+import {DataSource} from './data-source';
 
 @customElement('data-source-list')
 export class DataSourceList extends LitElement {
-    @state() private loaded:Promise<DataSource[]>|null = null;
+    @state() private loaded = false;
     @property({type: Array}) dataSources:DataSource[] = [];
-    @property({type: Array}) filters:FilterSource[] = [];
-    @property({type: Object}) filterTags = new Set<string>();
-    @property({type: Object}) disableTags = new Set<string>();
-    @property({type: Boolean}) expanded = false;
 
     static override styles = css`
-        .row {
+        .container  {
             display: flex;
-            justify-content: stretch;
+            flex-direction: column;
+            justify-content: center;
+            padding: 36px;
+            background-color: var(--gray-background);
         }
 
-        filter-list {
-            flex-grow: 1;
+        .container > * {
+            background-color: white;
         }
 
-        .sources {
-            flex-grow: 5;
+        .search-container {
+            align-items: center;
+            background: repeating-linear-gradient(
+                135deg,
+                #eee,
+                #eee 2px,
+                white 2px,
+                white 5px
+            );
+            display: flex;
+            justify-content: flex-end;
+            padding: 36px;
+        }
+
+        .search-container > paper-input {
+            background: white;
+            width: 360px;
+        }
+
+        .search-container > paper-icon-button {
+            background: black;
+            color: white;
+        }
+
+        .search-container > paper-icon-button:hover {
+            background: #333;
+        }
+
+        .table-container {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        butterfly-table {
+            height: 560px;
             overflow: scroll;
-        }
-
-        data-source {
-            display: block;
-            position: relative;
         }
     `;
 
     override render() {
         return html`
-            <div class="row">
-                ${guard([this.loaded], () => until(this.loadDataSources(), nothing))}
-                <filter-list
-                    style="${styleMap({
-                        display: this.expanded ? 'none' : 'block',
-                    })}"
-                    .filters="${this.filters}"
-                    .disableTags="${this.disableTags}"
-                    @tags-changed="${this.handleTagsChanged}">
-                </filter-list>
-                <div class="sources">
-                ${this.dataSources.map((data) => html`
-                    <data-source
-                        .data="${data}"
-                        .showTags="${this.filterTags}"
-                        .hide="${this.expanded}"
-                        @request-expand="${(e: CustomEvent) => {
-                            (e.target as DataSourceElement).expand = true;
-                            this.expanded = true;
-                        }}"
-                        @request-close="${(e: CustomEvent) => {
-                            (e.target as DataSourceElement).expand = false;
-                            this.expanded = false;
-                        }}"
+            <div class="container">
+                <div class="search-container">
+                    <paper-input
+                        class="search"
+                        ?disabled="${!this.loaded}"
+                        placeholder="${'enter search term'}"
                         >
-                    </data-source>
-                `)}
+                    </paper-input>
+                    <paper-icon-button icon="icons:search" class="search-button"></paper-icon-button>
+                </div>
+                <div class="table-container">
+                    ${guard([this.loaded, this.dataSources], () => until(this.loadDataSources(), html`
+                        <p class="loading">Loading...</p>
+                    `))}
                 </div>
             </div>
         `;
@@ -214,39 +93,23 @@ export class DataSourceList extends LitElement {
 
     async loadDataSources() {
         if (!this.loaded) {
-            this.loaded = Promise.all([new BenzeneReport().getDataSource()]);
-            const dataSources = await this.loaded;
-            const benzeneReport = dataSources[0];
-            this.dataSources = [benzeneReport, ...DATA_SOURCES];
-            this.filters = benzeneReport.filters;
+            const dataSources = await new BenzeneReport().getDataSources();;
+            this.dataSources = dataSources;
+            this.loaded = true;
         }
+        return html`
+        <butterfly-table
+            .tableData="${this.dataSources.map((data) => {
+                return {
+                    "Refinery Name": data.name,
+                    "Company Name": data.company,
+                    "City": data.city,
+                    "State": data.state, 
+                }
+            })}"
+        >
+        </butterfly-table>`;
         return nothing;
-    }
-
-    handleTagsChanged(e: CustomEvent<Set<string>>) {
-        this.filterTags = e.detail;
-        if (this.filterTags.size === 0) {
-            this.disableTags = new Set<string>();
-            return;
-        }
-        const unfilteredTags = new Set<string>();
-        const filteredOutTags = new Set<string>();
-        for (const dataSource of this.dataSources) {
-            const showSource = [...this.filterTags].every(tag=>dataSource.tags.has(tag));
-            if (showSource) {
-                for (const tag of dataSource.tags) {
-                    unfilteredTags.add(tag);
-                }
-            } else {
-                for (const tag of dataSource.tags) {
-                    filteredOutTags.add(tag);
-                }
-            }
-        }
-        for (const tag of unfilteredTags) {
-            filteredOutTags.delete(tag);
-        }
-        this.disableTags = filteredOutTags;
     }
 }
 

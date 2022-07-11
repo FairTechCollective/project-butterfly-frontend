@@ -8,19 +8,74 @@ import './file-format-selector';
 import './data-connectors';
 import './time-selector';
 
-import {LitElement, TemplateResult, html, css, nothing} from 'lit';
+import {LitElement, html, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 
 import {deepCopy} from './utils';
-import {Filter, FilterSource} from './filter-source';
+
+export enum TwoWeekPollutants {
+    Benzene='Benzene',
+}
+
+export enum ContinuousPollutants {
+    One_Three_Butadiene='1,3 Butadiene',
+    One_Two_Three_Trimethylbenzene='1,2,3 trimethylbenzene',
+    One_Two_Four_Trimethylbenzene='1,2,4 trimethylbenzene',
+    One_Three_Five_Trimethylbenzene='1,3,5 trimethylbenzene',
+    Two_Two_Four_Trimethylpentane='2,2,4 trimethylpentane',
+    Three_Methylpentane='3-Methylpentane',
+    Acetaldehyde='Acetaldehyde',
+    Acrolein='Acrolein',
+    Ammonia='Ammonia',
+    Benzene='Benzene',
+    Black_Carbon='Black carbon',
+    Butane='Butane',
+    Carbon_Disulfide='Carbon Disulfide',
+    Carbonyl_Sulfide='Carbonyl Sulfide',
+    Carbon_Monoxide='Carbon monoxide',
+    Ethane='Ethane',
+    Ethanol='Ethanol',
+    Ethylbenzene='Ethylbenzene',
+    Ethylene='Ethylene',
+    Formaldehyde='Formaldehyde',
+    Hydrogen_Cyanide='Hydrogen cyanide',
+    Hydrogen_Flouride='Hydrogen flouride',
+    Hydrogen_Sulfide='Hydrogen sulfide',
+    Mercaptan='Mercaptan',
+    Methane='Methane',
+    MTBE='MTBE',
+    N_Heptane='n-Heptane',
+    N_Hexane='n-Hexane',
+    N_Octane='n-Octane',
+    Nitrogen_Dioxide='Nitrogen dioxide',
+    Nitrous_Oxide='Nitrous oxide',
+    Ozone='Ozone',
+    Pentane='Pentane',
+    PM2_5='PM2.5',
+    Propane='Propane',
+    Styrene='Styrene',
+    Sulfur_Dioxide='Sulfur Dioxide',
+    Toluene='Toluene',
+    Xylene='Xylene',
+    M_xylene='m-xylene',
+    O_xylene='o-xylene',
+    P_xylene='p-xylene',
+}
 
 export interface DataSource {
-    title: string;
-    description: string;
+    name: string;
     tags: Set<string>;
     startTime: Date;
     endTime: Date;
-    filters: FilterSource[];
+    address: string;
+    city: string;
+    state: string;
+    company: string;
+    twoWeekPollutants: TwoWeekPollutants[];
+    continuousPollutants: ContinuousPollutants[];
+    ranking: number;
+    benzeneConcentration: number;
+    benzeneWeeksExceeding: number;
 }
 
 export enum DataSourceEvent {
@@ -33,18 +88,22 @@ export enum DataSourceEvent {
 export class DataSourceElement extends LitElement {
     
     @property({type: Object}) data:DataSource = {
-        title: "",
-        description: "",
+        name: "",
         tags: new Set<string>([]),
         startTime: new Date(0),
         endTime: new Date(0),
-        filters: [],
+        address: "",
+        city: "",
+        state: "",
+        company: "",
+        twoWeekPollutants: [],
+        continuousPollutants: [],
+        ranking: 0,
+        benzeneConcentration: 0,
+        benzeneWeeksExceeding: 0,
     };
     
-    @property({type: Boolean}) expand = false;
-    @property({type: Boolean}) hide = false;
-    @property({type: Object}) showTags = new Set<string>([]);
-    @property({type: Boolean}) forExport = false;
+    @property({type: Boolean}) asPopup = false;
     @property({type: Object}) selectedStartTime = new Date(0);
     @property({type: Object}) selectedEndTime = new Date(0);
 
@@ -99,70 +158,28 @@ export class DataSourceElement extends LitElement {
     }
 
     override render() {
-        if ((this.hide && !this.expand) || this.showTags.size && 
-            [...this.showTags].some(tag=>!this.data.tags.has(tag))) {
-            return nothing;    
-        } else if (this.expand) {
-            return this.renderModal();
+        if (this.asPopup) {
+            return this.renderPopup();
         } else {
-            return this.renderSummary();
+            return this.renderRefineryPage();
         }
     }
 
-    private renderSummary() {
+    private renderPopup() {
         return html`
             <article>
                 ${this.renderDescription()}
-                ${this.renderFilterSummary(this.forExport)}
-                ${this.renderTimeSummary(this.forExport)}
-                ${this.renderSummaryButtons()}
             </article>
         `;
     }
 
     private renderDescription() {
-        if (this.forExport) {
-            return html`
-                <p>
-                    <span class="title">${this.data.title}</span>:
-                    ${this.data.description}
-                </p>
-            `;
-        }
         return html`
-            <h3>${this.data.title}</h3>
-            <p>${this.data.description}</p>
+            <h3>${this.data.name}</h3>
         `;
     }
 
-    private renderFilterSummary(showChecked: boolean) {
-        const summary: TemplateResult[] = [];
-        const findLeafTags = (filters: Filter[], labels: TemplateResult[]) => {
-            for (const filter of filters) {
-                if (filter.options.length) {
-                    findLeafTags(filter.options, labels);
-                } else {
-                    if (!showChecked || filter.checked) {
-                        labels.push(
-                            html`<a class="tag" href="#">
-                                ${filter.label}
-                            </a>`);
-                    }
-                }
-            }
-        };
-        for (const source of this.data.filters) {
-            const labels: TemplateResult[] = [];
-            findLeafTags(source.filters, labels)
-            summary.push(html`<p>
-                <span>${source.header}: </span>
-                ${labels}
-            </p>`);
-        }
-        return html`<section>${summary}</section>`;
-    }
-
-    private renderTimeSummary(showSelectedTime: boolean) {
+    private renderTimeSummary() {
         function summarizeDate(d: Date) {
             const year = d.getFullYear();
             const date = d.getDate();
@@ -186,10 +203,6 @@ export class DataSourceElement extends LitElement {
         }
         let startTime = this.data.startTime;
         let endTime = this.data.endTime;
-        if (showSelectedTime) {
-            startTime = this.selectedStartTime;
-            endTime = this.selectedEndTime;
-        }
         return html`<section>
             <p>
                 <span>Time Range:</span>
@@ -198,19 +211,7 @@ export class DataSourceElement extends LitElement {
         </section>`;
     }
 
-    private renderSummaryButtons() {
-        let buttons = html`<paper-button
-            @click="${() => {
-                this.dispatchEvent(
-                    new CustomEvent(DataSourceEvent.REQUEST_EXPAND));
-            }}">Select</paper-button>`;
-        if (this.forExport) {
-            buttons = html`<file-format-download></file-format-download>`;
-        }
-        return buttons;
-    }
-
-    private renderModal() {
+    private renderRefineryPage() {
         return html`
             <article>
                 <div class="row button-container">
@@ -222,7 +223,7 @@ export class DataSourceElement extends LitElement {
                                     new CustomEvent(DataSourceEvent.REQUEST_CLOSE));
                             }}">
                         </paper-icon-button>
-                        <h3>${this.data.title}</h3>
+                        <h3>${this.data.name}</h3>
                     </div>
                     <div class="row">
                         <paper-button
@@ -232,7 +233,7 @@ export class DataSourceElement extends LitElement {
                         <file-format-download></file-format-download>
                     </div>
                 </div>
-                <p>${this.data.description}</p>
+                ${this.renderTimeSummary()}
                 <time-selector
                   .startTime="${this.data.startTime}"
                   .endTime="${this.data.endTime}"
@@ -241,8 +242,6 @@ export class DataSourceElement extends LitElement {
                       this.selectedEndTime = e.detail[1];
                   }}
                 ></time-selector>
-                <filter-list .filters="${this.data.filters}">
-                </filter-list>
             </article>`;
     }
 
