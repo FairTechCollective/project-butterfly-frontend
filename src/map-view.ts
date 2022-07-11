@@ -21,7 +21,7 @@ export class MapView extends LitElement {
         const width = bbox.width;
         const height = bbox.height;
         let projection = d3.geoMercator();
-        Promise.all([d3.json('united_states.geojson'), d3.json('refineries.geojson')]).then((bbs) => {
+        Promise.all([d3.json('geojson/united_states.geojson'), d3.json('geojson/refineries.geojson')]).then((bbs) => {
             document.getElementById('map-container')!.style.visibility = 'visible';
             const usBB = bbs[0] as ExtendedFeatureCollection;
             const refineriesBB = bbs[1] as ExtendedFeatureCollection;

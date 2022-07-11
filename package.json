@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "build:static": "rollup --config",
+    "build:static": "npm run build && rollup --config",
     "clean": "rimraf app.{d.ts,d.ts.map,js,js.map} test/app.{d.ts,d.ts.map,js,js.map} test/app_test.{d.ts,d.ts.map,js,js.map}",
     "lint": "npm run lint:lit-analyzer && npm run lint:eslint",
     "lint:eslint": "eslint 'src/**/*.ts'",

@@ -26,9 +26,6 @@
         "name": "ts-lit-plugin",
         "strict": true
       }
-    ],
-    "types": [
-      "geojson"
     ]
   },
   "include": ["src/**/*.ts"],
